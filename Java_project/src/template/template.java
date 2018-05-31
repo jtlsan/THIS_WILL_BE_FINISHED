@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class template extends JFrame{
 	private Container c;
-	public template() {
+	public template() { //ㅇㅇㅇㅇ
 		setTitle("스플릿 페인 만들기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
