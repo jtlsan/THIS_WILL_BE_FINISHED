@@ -1,6 +1,12 @@
 package template;
 import javax.swing.*;
+import Structure.ApplyText;
+import Structure.MakeStructure;
+import Structure.SplitByEnter;
+
+import java.awt.event.*;
 import java.awt.*;
+import java.util.StringTokenizer;
 
 public class template extends JFrame{
 	private Container c;
@@ -69,6 +75,18 @@ public class template extends JFrame{
 		scrollPane1.setColumnHeaderView(label1);
 		JButton set = new JButton("적용");
 		panel1.add(set, BorderLayout.SOUTH);
+		set.addMouseListener(new MouseListener() {
+			public void mousePressed(MouseEvent e) {	//고친 부분
+				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
+				MakeStructure struct = new MakeStructure(splitList);
+			}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+		});
+		
+	
 	
 		
 		JLabel label2 = new JLabel("Mind Map Pane");
@@ -87,7 +105,17 @@ public class template extends JFrame{
 		
 		
 		c.add(splitPane1);
+		
+		
 	}
+
+		
+
+		
+		
+
+	
+	
 	public static void main(String[] args) {
 		new template();
 		
