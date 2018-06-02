@@ -1,12 +1,10 @@
 package template;
 import javax.swing.*;
-import Structure.ApplyText;
 import Structure.MakeStructure;
 import Structure.SplitByEnter;
 
 import java.awt.event.*;
 import java.awt.*;
-import java.util.StringTokenizer;
 
 public class template extends JFrame{
 	private Container c;
