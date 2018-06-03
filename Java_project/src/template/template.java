@@ -1,10 +1,11 @@
 package template;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class template extends JFrame{
 	private Container c;
-	public template() { //ㅇㅇㅇㅇ
+	public template() { 
 		setTitle("스플릿 페인 만들기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
@@ -69,13 +70,18 @@ public class template extends JFrame{
 		scrollPane1.setColumnHeaderView(label1);
 		JButton set = new JButton("적용");
 		panel1.add(set, BorderLayout.SOUTH);
-	
+		
+		
+	//-------------------------------------------------------------------------------------------
 		
 		JLabel label2 = new JLabel("Mind Map Pane");
 		label2.setSize(50,50);	
 		scrollPane2.setPreferredSize(new Dimension(600, 500));
 		scrollPane2.setColumnHeaderView(label2);
+		scrollPane2.setViewportView(panel2);
 		
+	
+	//--------------------------------------------------------------------------------------------	
 		panel3.setLayout(new BorderLayout());
 		panel3.add(scrollPane3);
 		JLabel label3 = new JLabel("Atribute Pane");
@@ -85,6 +91,44 @@ public class template extends JFrame{
 		JButton chg = new JButton("변경");
 		panel3.add(chg, BorderLayout.SOUTH);
 		
+		JPanel middle = new JPanel();
+		
+		GridLayout grid = new GridLayout(6,2);
+		grid.setVgap(10);
+		
+		middle.setLayout(grid);
+		
+		JLabel text = new JLabel("     TEXT");
+		JTextField nodeName = new JTextField();
+		JLabel X = new JLabel("     X");
+		JTextField XofNode = new JTextField();
+		JLabel Y = new JLabel("     Y");
+		JTextField YofNode = new JTextField();
+		JLabel W = new JLabel("     W");
+		JTextField WofNode = new JTextField();
+		JLabel H = new JLabel("     H");
+		JTextField HofNode = new JTextField();
+		JLabel Color= new JLabel("     Color");
+		JTextField ColorofNode = new JTextField();
+		
+		middle.add(text);
+		middle.add(nodeName);
+		middle.add(X);
+		middle.add(XofNode);
+		middle.add(Y);
+		middle.add(YofNode);
+		middle.add(W);
+		middle.add(WofNode);
+		middle.add(H);
+		middle.add(HofNode);
+		middle.add(Color);
+		middle.add(ColorofNode);
+		
+		scrollPane3.setViewportView(middle);
+		
+		
+		
+		//-----------------------------------------------------------------------
 		
 		c.add(splitPane1);
 	}
