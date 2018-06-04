@@ -1,14 +1,16 @@
 package template;
 import javax.swing.*;
 import Structure.MakeStructure;
+import MindMapPane.DrawInfo;
 import Structure.SplitByEnter;
 
 import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class template extends JFrame{
 	private Container c;
-	public template() {
+	public template() { 
 		setTitle("스플릿 페인 만들기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
@@ -62,6 +64,7 @@ public class template extends JFrame{
 		JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane2,panel3);
 		JSplitPane splitPane1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel1, splitPane2);
 		
+		
 		JTextArea textEditorPane = new JTextArea();
 		scrollPane1.setViewportView(textEditorPane);
 		
@@ -77,6 +80,8 @@ public class template extends JFrame{
 			public void mousePressed(MouseEvent e) {	//고친 부분
 				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
 				MakeStructure struct = new MakeStructure(splitList);
+				panel2.setVisible(true);
+				new DrawInfo(struct, panel2);
 			}
 			public void mouseReleased(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {}
@@ -86,12 +91,34 @@ public class template extends JFrame{
 		
 	
 	
+
+		
+		
+	//-------------------------------------------------------------------------------------------
+
 		
 		JLabel label2 = new JLabel("Mind Map Pane");
 		label2.setSize(50,50);	
 		scrollPane2.setPreferredSize(new Dimension(600, 500));
+		panel2.setSize(600,500);
 		scrollPane2.setColumnHeaderView(label2);
+		scrollPane2.setViewportView(panel2);
+		panel2.setLayout(null);
+		panel2.setVisible(true);
 		
+		/*
+		JLabel test = new JLabel("root");
+		test.setSize(50,  20);
+		panel2.setLayout(null);
+		test.setLocation(50, 50);
+		panel2.add(test);
+		test.setBackground(Color.BLUE);
+		test.setOpaque(true);
+		*/
+		//test.setVisible(true);
+		
+	
+	//--------------------------------------------------------------------------------------------	
 		panel3.setLayout(new BorderLayout());
 		panel3.add(scrollPane3);
 		JLabel label3 = new JLabel("Atribute Pane");
@@ -101,6 +128,44 @@ public class template extends JFrame{
 		JButton chg = new JButton("변경");
 		panel3.add(chg, BorderLayout.SOUTH);
 		
+		JPanel middle = new JPanel();
+		
+		GridLayout grid = new GridLayout(6,2);
+		grid.setVgap(10);
+		
+		middle.setLayout(grid);
+		
+		JLabel text = new JLabel("     TEXT");
+		JTextField nodeName = new JTextField();
+		JLabel X = new JLabel("     X");
+		JTextField XofNode = new JTextField();
+		JLabel Y = new JLabel("     Y");
+		JTextField YofNode = new JTextField();
+		JLabel W = new JLabel("     W");
+		JTextField WofNode = new JTextField();
+		JLabel H = new JLabel("     H");
+		JTextField HofNode = new JTextField();
+		JLabel Color= new JLabel("     Color");
+		JTextField ColorofNode = new JTextField();
+		
+		middle.add(text);
+		middle.add(nodeName);
+		middle.add(X);
+		middle.add(XofNode);
+		middle.add(Y);
+		middle.add(YofNode);
+		middle.add(W);
+		middle.add(WofNode);
+		middle.add(H);
+		middle.add(HofNode);
+		middle.add(Color);
+		middle.add(ColorofNode);
+		
+		scrollPane3.setViewportView(middle);
+		
+		
+		
+		//-----------------------------------------------------------------------
 		
 		c.add(splitPane1);
 		
