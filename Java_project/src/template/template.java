@@ -81,7 +81,7 @@ public class template extends JFrame{
 				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
 				MakeStructure struct = new MakeStructure(splitList);
 				panel2.setVisible(true);
-				new DrawInfo(struct, panel2);
+				new DrawInfo(struct, panel2, null);
 			}
 			public void mouseReleased(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {}

@@ -8,6 +8,7 @@ import java.awt.event.*;
 public class MakeStructure{
 	int treeHeight;
 	public int x, y, width, height;					//600 x 500
+	public Color background;
 	public String name;	
 	String list[];
 	String fixList[];
