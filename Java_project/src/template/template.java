@@ -1,11 +1,11 @@
-package template;
+/*package template;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class template extends JFrame{
 	private Container c;
-	public template() { 
+	public template() { //ㅇㅇㅇㅇ
 		setTitle("스플릿 페인 만들기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
@@ -60,25 +60,25 @@ public class template extends JFrame{
 		JSplitPane splitPane1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel1, splitPane2);
 		
 		JTextArea textEditorPane = new JTextArea();
-		scrollPane1.setViewportView(textEditorPane);
+		scrollPane1.setViewportView(textEditorPane);//
 		
-		panel1.setLayout(new BorderLayout());
-		panel1.add(scrollPane1);
-		JLabel label1 = new JLabel("Text Editor Pane");
-		label1.setSize(50,50);	
-		scrollPane1.setPreferredSize(new Dimension(200, 500));
-		scrollPane1.setColumnHeaderView(label1);
+		panel1.setLayout(new BorderLayout());//
+		panel1.add(scrollPane1);//
+		JLabel label1 = new JLabel("Text Editor Pane");//
+		label1.setSize(50,50);//
+		scrollPane1.setPreferredSize(new Dimension(200, 500));//
+		scrollPane1.setColumnHeaderView(label1);//
 		JButton set = new JButton("적용");
-		panel1.add(set, BorderLayout.SOUTH);
+		panel1.add(set, BorderLayout.SOUTH);//
 		
 		
 	//-------------------------------------------------------------------------------------------
 		
 		JLabel label2 = new JLabel("Mind Map Pane");
-		label2.setSize(50,50);	
-		scrollPane2.setPreferredSize(new Dimension(600, 500));
-		scrollPane2.setColumnHeaderView(label2);
-		scrollPane2.setViewportView(panel2);
+		label2.setSize(50,50);	//
+		scrollPane2.setPreferredSize(new Dimension(600, 500));//
+		scrollPane2.setColumnHeaderView(label2);//
+		scrollPane2.setViewportView(panel2);//
 		
 	
 	//--------------------------------------------------------------------------------------------	
@@ -88,12 +88,12 @@ public class template extends JFrame{
 		label3.setSize(50,50);	
 		scrollPane3.setPreferredSize(new Dimension(200, 200));
 		scrollPane3.setColumnHeaderView(label3);
-		JButton chg = new JButton("변경");
+		JButton chg = new JButton("변경");//
 		panel3.add(chg, BorderLayout.SOUTH);
 		
-		JPanel middle = new JPanel();
+		JPanel middle = new JPanel();//
 		
-		GridLayout grid = new GridLayout(6,2);
+		GridLayout grid = new GridLayout(6,2);//
 		grid.setVgap(10);
 		
 		middle.setLayout(grid);
@@ -137,4 +137,4 @@ public class template extends JFrame{
 		
 	}
 
-}
+}*/

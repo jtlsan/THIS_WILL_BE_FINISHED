@@ -1,7 +1,16 @@
 package template;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+
 import javax.swing.border.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+
+import java.io.File;
+
 import javax.swing.*;
 
 public class Template1 {
@@ -15,6 +24,8 @@ public class Template1 {
 	JMenu MenuExit = new JMenu("닫기");
 	JMenu MenuApply = new JMenu("적용");
 	JMenu MenuChange = new JMenu("변경");
+	
+	JFileChooser FileChooser = new JFileChooser();
 	
 	JToolBar toolBar = new JToolBar();
 	JButton Toolnew = new JButton("새로만들기");
@@ -37,9 +48,11 @@ public class Template1 {
 	JTextArea textEditorPane = new JTextArea();
 	
 	JButton set = new JButton("적용");
-	////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////여기까지 첫번째 텍스트페인
+	
 	JLabel label2 = new JLabel("Mind Map Pane");
-	////////////////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////////////위에는 마인드맵 페인 아래는 속성페
 	JButton chg = new JButton("변경");
 	JPanel middle = new JPanel();
 	GridLayout grid = new GridLayout(6,2);
@@ -75,6 +88,7 @@ public class Template1 {
 		mb.add(MenuExit);
 		mb.add(MenuApply);
 		mb.add(MenuChange);
+		
 		
 		// 툴바 생성, 붙이기
 		frame.add(toolBar, BorderLayout.NORTH);
@@ -139,9 +153,8 @@ public class Template1 {
 		
 		frame.add(splitPane1);
 	}
-	public static void main(String[] args) {
-		Template1 view = new Template1();
-		
-	}
+	
+	
 	
 }
+
