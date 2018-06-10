@@ -1,5 +1,7 @@
 package template;
 import javax.swing.*;
+import MouseOption.AddMouseListener;
+import MouseOption.NodeMouseListener;
 import Structure.DrawKit;
 import JsonInput.Input;
 import Structure.MakeStructure;
@@ -11,9 +13,11 @@ import java.awt.event.*;
 import java.awt.*;
 import java.awt.event.*;
 
+//root가 센터로 가는 거랑 각 노드 문자열이 길어졌을 때 그만큼 크기 커지는거 필요
 public class template extends JFrame{
 	private Container c;
 	MakeStructure struct;
+	DrawInfo nodeInfo;
 	MapPanel panel2;
 	public template() { 
 		setTitle("스플릿 페인 만들기");
@@ -103,29 +107,7 @@ public class template extends JFrame{
 		scrollPane1.setColumnHeaderView(label1);
 		JButton set = new JButton("적용");
 		panel1.add(set, BorderLayout.SOUTH);
-		set.addMouseListener(new MouseListener() {
-			public void mousePressed(MouseEvent e) {	//고친 부분
-				
-			}
-			public void mouseReleased(MouseEvent e) {}
-			public void mouseClicked(MouseEvent e) {
-				
-				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
-				struct = new MakeStructure(splitList);
-				new OverLap(struct).OverallOverLap();
-				panel2 = new MapPanel(struct);
-				panel2.setSize(600,500);
-				new DrawInfo(struct, panel2, null);
-				scrollPane2.setViewportView(panel2);
-				panel2.setLayout(null);
-				panel2.setVisible(true);
-			}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {
-				
-
-			}
-		});
+		
 		
 	
 	
@@ -138,6 +120,7 @@ public class template extends JFrame{
 		JLabel label2 = new JLabel("Mind Map Pane");
 		label2.setSize(50,50);	
 		scrollPane2.setPreferredSize(new Dimension(600, 500));
+		scrollPane2.setSize(600, 500);
 		
 		scrollPane2.setColumnHeaderView(label2);
 		
@@ -173,6 +156,7 @@ public class template extends JFrame{
 		
 		JLabel text = new JLabel("     TEXT");
 		JTextField nodeName = new JTextField();
+		nodeName.setEditable(false);
 		JLabel X = new JLabel("     X");
 		JTextField XofNode = new JTextField();
 		JLabel Y = new JLabel("     Y");
@@ -183,6 +167,8 @@ public class template extends JFrame{
 		JTextField HofNode = new JTextField();
 		JLabel Color= new JLabel("     Color");
 		JTextField ColorofNode = new JTextField();
+		
+		
 		
 		middle.add(text);
 		middle.add(nodeName);
@@ -205,6 +191,31 @@ public class template extends JFrame{
 		
 		c.add(splitPane1);
 		
+		set.addMouseListener(new MouseListener() {
+			public void mousePressed(MouseEvent e) {	//고친 부분
+				
+			}
+			public void mouseReleased(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				
+				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
+				struct = new MakeStructure(splitList);
+				new OverLap(struct).OverallOverLap();
+				panel2 = new MapPanel(struct);
+				panel2.setSize(600,500);
+				nodeInfo = new DrawInfo(struct, panel2, null);
+				scrollPane2.setViewportView(panel2);
+				panel2.setLayout(null);
+				panel2.setVisible(true);
+				new AddMouseListener(nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo);
+			}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {
+				
+
+			}
+		});
+		
 		
 		
 	}
@@ -218,7 +229,6 @@ public class template extends JFrame{
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-			System.out.println("드로우 시도");
 			g.setColor(Color.BLACK);
 			//맨 처음 root와의 연결선 그리기
 			if(strct.treeHeight == 0) {
