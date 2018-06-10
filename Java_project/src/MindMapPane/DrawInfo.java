@@ -19,34 +19,11 @@ public class DrawInfo {
 	public DrawInfo next[] = new DrawInfo[4];
 	public String name;
 	public JLabel node;
-	Color background;
 	
-	public DrawInfo(MakeStructure structure, JPanel panel, Color background) {		//600 x 500
+	public DrawInfo(MakeStructure structure, JPanel panel) {		//600 x 500
 		this.structure = structure;
 		this.panel = panel;
 		this.name = structure.name;
-		this.background = background;
-		
-		int r = 0, g = 0, b = 0;
-		
-		if (background == null) {
-			while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
-				r = (int)(Math.random() * 256);
-				g = (int)(Math.random() * 256);
-				b = (int)(Math.random() * 256);
-			}
-			this.background = new Color(r, g, b);
-			r = 0; g = 0; b = 0;
-		}
-		while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
-			r = (int)(Math.random() * 256);
-			g = (int)(Math.random() * 256);
-			b = (int)(Math.random() * 256);
-		}
-
-		Color setNextColor = new Color(r, g, b);
-		
-		structure.background = this.background;
 		node = new JLabel(name);
 		node.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -66,7 +43,7 @@ public class DrawInfo {
 		for(int i = 0; i < 4; i++) {
 			if (structure.next[i] == null)
 				break;
-			next[i] = new DrawInfo(structure.next[i], panel, setNextColor);
+			next[i] = new DrawInfo(structure.next[i], panel);
 		}
 	}
 	

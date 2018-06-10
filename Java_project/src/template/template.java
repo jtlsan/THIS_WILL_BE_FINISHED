@@ -199,15 +199,15 @@ public class template extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				
 				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
-				struct = new MakeStructure(splitList);
+				struct = new MakeStructure(splitList, null);
 				new OverLap(struct).OverallOverLap();
 				panel2 = new MapPanel(struct);
 				panel2.setSize(600,500);
-				nodeInfo = new DrawInfo(struct, panel2, null);
+				nodeInfo = new DrawInfo(struct, panel2);
 				scrollPane2.setViewportView(panel2);
 				panel2.setLayout(null);
 				panel2.setVisible(true);
-				new AddMouseListener(nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo);
+				new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo);
 			}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {

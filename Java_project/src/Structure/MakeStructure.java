@@ -12,6 +12,7 @@ public class MakeStructure{
 	public String name;	
 	String list[];
 	String fixList[];
+	Color nextColor;
 	public MakeStructure next[] = new MakeStructure[4];		//하나의 노드에 붙는 다른 노드들의 최대 개수
 	
 	public MakeStructure(int treeHeight, int x, int y, int width, int height, Color background, String name) {
@@ -24,12 +25,32 @@ public class MakeStructure{
 		this.name = name;
 	}
 											
-	public MakeStructure(String[] list) {
+	public MakeStructure(String[] list, Color background) {
 		this.list = list;									//\n을 기준으로 split된 문자열을 받는다.
 		treeHeight = tabcount(list[0]);							//현재 자료의 높이(=\t개수) 설정
 		name = list[0].trim();
 		width = 50;
 		height = 20;
+		this.background = background;
+		int r = 0, g = 0, b = 0;
+		
+		if(background == null) {
+			while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
+				r = (int)(Math.random() * 256);
+				g = (int)(Math.random() * 256);
+				b = (int)(Math.random() * 256);
+			}
+			this.background = new Color(r, g, b);
+			r = 0; g = 0; b = 0;
+		}
+		
+		while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
+			r = (int)(Math.random() * 256);
+			g = (int)(Math.random() * 256);
+			b = (int)(Math.random() * 256);
+		}
+		
+		nextColor = new Color(r, g, b);
 		
 		
 		if (list.length > 1) {								//fixList는 list의 배열들을 한 칸씩 앞으로 당긴 것(ex) fixList[0] == List[1];
@@ -61,7 +82,7 @@ public class MakeStructure{
 				nextHeight = tabcount(fixList[0]);	
 			//다음 노드의 height가 현재 노드의 height보다 1만큼 높을 경우에만 next로 다음 노드 연결. 그렇지 않을 경우 for문 break.
 				if(nextHeight == treeHeight + 1) {
-					next[j] = new MakeStructure(fixList);
+					next[j] = new MakeStructure(fixList, nextColor);
 					//문자 중앙정렬도 해줘야 x y 를 넘겨줄까?다음구조에
 					if (next[j].fixList == null) {		//List 문자열의 최종에 다다랐을 경우 fixList를 따로 배정하지 않으므로  fixList는 null이 된다.
 						fixList = null;
