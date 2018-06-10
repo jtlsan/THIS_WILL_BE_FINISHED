@@ -1,8 +1,11 @@
 package template;
 import javax.swing.*;
+import Structure.DrawKit;
+import JsonInput.Input;
 import Structure.MakeStructure;
 import MindMapPane.DrawInfo;
 import Structure.SplitByEnter;
+import Structure.OverLap;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -10,6 +13,8 @@ import java.awt.event.*;
 
 public class template extends JFrame{
 	private Container c;
+	MakeStructure struct;
+	MapPanel panel2;
 	public template() { 
 		setTitle("스플릿 페인 만들기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,27 +41,48 @@ public class template extends JFrame{
 		setJMenuBar(mb);
 	}
 	private void creatTool() {
-		JToolBar toolBar = new JToolBar();
-		toolBar.setFloatable(false);
-		toolBar.setBackground(Color.LIGHT_GRAY);
-		
-		JButton newBtn = new JButton("새로만들기");
-		newBtn.setToolTipText("파일을 생성합니다");
-		toolBar.add(newBtn);					// 툴팁달때는 이렇게
-		
-		toolBar.add(new JButton("열기"));			// 안달때
-		toolBar.add(new JButton("저장"));
-		toolBar.add(new JButton("다른이름으로 저장"));
-		toolBar.add(new JButton("닫기"));
-		toolBar.add(new JButton("적용"));
-		toolBar.add(new JButton("변경"));
-		
-		c.add(toolBar, BorderLayout.NORTH);
+	      JToolBar toolBar = new JToolBar();
+	      toolBar.setFloatable(false);
+	      toolBar.setBackground(Color.LIGHT_GRAY);
+	      
+	      JButton newBtn = new JButton("새로만들기");
+	      newBtn.setToolTipText("파일을 생성합니다");
+	      toolBar.add(newBtn);               // 툴팁달때는 이렇게
+	      
+	      JButton openBtn = new JButton("열기");
+	      openBtn.setToolTipText("파일을 엽니다");
+	      toolBar.add(openBtn);
+	      
+	      
+	      JButton saveBtn = new JButton("저장");
+	      
+	      saveBtn.setToolTipText("파일을 저장합니다");
+	      toolBar.add(saveBtn);
+	      saveBtn.addMouseListener(new MouseListener() {
+	         public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+	            
+	            Input tmp = new Input();
+	            tmp.StoreJson(struct);//
+	            
+	         }
+	         public void mouseReleased(MouseEvent e) {}
+	         public void mouseClicked(MouseEvent e) {}
+	         public void mouseEntered(MouseEvent e) {}
+	         public void mouseExited(MouseEvent e) {}
+	      });
+	      
+	      toolBar.add(new JButton("다른이름으로 저장"));
+	      toolBar.add(new JButton("닫기"));
+	      toolBar.add(new JButton("적용"));
+	      toolBar.add(new JButton("변경"));
+	      
+	      c.add(toolBar, BorderLayout.NORTH);
 	}
+
 	private void creatPane() {
 		
 		JPanel panel1 = new JPanel();
-		JPanel panel2 = new JPanel();
+		
 		JPanel panel3 = new JPanel();
 		JScrollPane scrollPane1 = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
 		JScrollPane scrollPane2 = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -66,6 +92,7 @@ public class template extends JFrame{
 		
 		
 		JTextArea textEditorPane = new JTextArea();
+		textEditorPane.setTabSize(2);
 		scrollPane1.setViewportView(textEditorPane);
 		
 		panel1.setLayout(new BorderLayout());
@@ -78,15 +105,26 @@ public class template extends JFrame{
 		panel1.add(set, BorderLayout.SOUTH);
 		set.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {	//고친 부분
-				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
-				MakeStructure struct = new MakeStructure(splitList);
-				panel2.setVisible(true);
-				new DrawInfo(struct, panel2, null);
+				
 			}
 			public void mouseReleased(MouseEvent e) {}
-			public void mouseClicked(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				
+				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
+				struct = new MakeStructure(splitList);
+				new OverLap(struct).OverallOverLap();
+				panel2 = new MapPanel(struct);
+				panel2.setSize(600,500);
+				new DrawInfo(struct, panel2, null);
+				scrollPane2.setViewportView(panel2);
+				panel2.setLayout(null);
+				panel2.setVisible(true);
+			}
 			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {
+				
+
+			}
 		});
 		
 	
@@ -100,11 +138,9 @@ public class template extends JFrame{
 		JLabel label2 = new JLabel("Mind Map Pane");
 		label2.setSize(50,50);	
 		scrollPane2.setPreferredSize(new Dimension(600, 500));
-		panel2.setSize(600,500);
+		
 		scrollPane2.setColumnHeaderView(label2);
-		scrollPane2.setViewportView(panel2);
-		panel2.setLayout(null);
-		panel2.setVisible(true);
+		
 		
 		/*
 		JLabel test = new JLabel("root");
@@ -170,15 +206,74 @@ public class template extends JFrame{
 		c.add(splitPane1);
 		
 		
+		
+	}
+	
+	class MapPanel extends JPanel{
+		MakeStructure strct;
+		public MapPanel(MakeStructure strct) {
+			this.strct = strct;
+		}
+		
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+			System.out.println("드로우 시도");
+			g.setColor(Color.BLACK);
+			//맨 처음 root와의 연결선 그리기
+			if(strct.treeHeight == 0) {
+				for(int i = 0; i < strct.next.length; i++) {
+					if (strct.next[i] == null)
+						break;
+					
+					switch(i) {
+					case 0:
+						x1 = strct.x;
+						y1 = strct.y + (int)(strct.height/2);
+						x2= strct.next[i].x + strct.next[i].width;
+						y2 = strct.y + (int)(strct.next[i].height/2);
+						g.drawLine(x1,  y1,  x2,  y2);
+						new DrawKit(strct.next[i]).WestLine(g);
+						break;
+					
+					case 1:
+						x1 = strct.x + (int)(strct.width / 2);
+						y1 = strct.y;
+						x2 = strct.next[i].x + (int)(strct.next[i].width / 2);
+						y2 = strct.next[i].y + strct.next[i].height;
+						g.drawLine(x1,  y1,  x2,  y2);
+						new DrawKit(strct.next[i]).NorthLine(g);
+						break;
+						
+					case 2:
+						x1 = strct.x + strct.width;
+						y1 = strct.y + (int)(strct.height / 2);
+						x2 = strct.next[i].x;
+						y2 = strct.next[i].y + (int)(strct.height / 2);
+						g.drawLine(x1,  y1,  x2,  y2);
+						new DrawKit(strct.next[i]).EastLine(g);
+						break;
+						
+					case 3:
+						x1 = strct.x + (int)(strct.width /2);
+						y1 = strct.y + strct.height;
+						x2 = strct.next[i].x + (int)(strct.width / 2);
+						y2 = strct.next[i].y;
+						g.drawLine(x1,  y1,  x2,  y2);
+						new DrawKit(strct.next[i]).SouthLine(g);
+						break;
+					}
+					
+				}
+			}
+			
+			else {
+				
+			}
+		}
 	}
 
-		
 
-		
-		
-
-	
-	
 	public static void main(String[] args) {
 		new template();
 		

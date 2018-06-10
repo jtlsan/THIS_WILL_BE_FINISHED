@@ -6,13 +6,23 @@ import java.awt.event.*;
 
 //자료구조 트리 만듬
 public class MakeStructure{
-	int treeHeight;
+	public int treeHeight;
 	public int x, y, width, height;					//600 x 500
 	public Color background;
 	public String name;	
 	String list[];
 	String fixList[];
 	public MakeStructure next[] = new MakeStructure[4];		//하나의 노드에 붙는 다른 노드들의 최대 개수
+	
+	public MakeStructure(int treeHeight, int x, int y, int width, int height, Color background, String name) {
+		this.treeHeight = treeHeight;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.background = background;
+		this.name = name;
+	}
 											
 	public MakeStructure(String[] list) {
 		this.list = list;									//\n을 기준으로 split된 문자열을 받는다.
@@ -33,7 +43,8 @@ public class MakeStructure{
 		if (treeHeight == 0) {
 			x = 275;				//****************scrollpane 구현에 따라서 센터의 좌표를 상대적으로 설정하게 고쳐야 할 수 있음
 			y = 240;
-			SetDrawInfo(next);
+			SetDrawInfo();
+			FixOverLap();
 		}
 	}
 	
@@ -68,35 +79,71 @@ public class MakeStructure{
 			
 		}
 	}
-	public void SetDrawInfo(MakeStructure[] strct) {	//SetDrawInfo(next);
-		MakeStructure tmp[] = strct;
+	
+	public void SetDrawInfo() {	//SetDrawInfo(next);
+		MakeStructure tmp[] = next;
 		for(int i = 0; i < 4; i++) {		//************1. root가 아닌 트리에서 4번째 연결고리를 생성하려고 할 때 오류표시
 			if (tmp[i] == null) {
 				break;
 			}
-			switch (i) {					//************2. 그 트리 height 한계.(node 개수)문제
-			case 0 :
-				tmp[i].x = x - 90;
-				tmp[i].y = y - 80;
-				break;
-			case 1 :
-				tmp[i].x = x + 90;
-				tmp[i].y = y - 80;
-				break;
-			case 2 :
-				tmp[i].x = x - 90;
-				tmp[i].y = y + 80;
-				break;
-			case 3 :
-				tmp[i].x = x + 90;
-				tmp[i].y = y + 80;
-				break;
-			}
-			if (tmp[i].next[0] != null)
-				tmp[i].SetDrawInfo(tmp[i].next);
+			
+				switch (i) {					//************2. 그 트리 height 한계.(node 개수)문제
+				case 0 :
+					tmp[i].x = x - 90;
+					tmp[i].y = y;
+					new DrawKit(tmp[i]).SetWest();
+					break;
+				case 1 :
+					tmp[i].x = x;
+					tmp[i].y = y - 60;
+					new DrawKit(tmp[i]).SetNorth();
+					break;
+				case 2 :
+					tmp[i].x = x + 90;
+					tmp[i].y = y;
+					new DrawKit(tmp[i]).SetEast();
+					break;
+				case 3 :
+					tmp[i].x = x;
+					tmp[i].y = y + 60;
+					new DrawKit(tmp[i]).SetSouth();
+					break;
+				}
 		}
+			
+			
 	}
 	
+	
+	
+	
+	void FixOverLap() {	//현재 노드의 child의 child가 겹칠 경우 child와 child of child의 위치 변경.(그냥 child는 서로 겹칠 리가 업으므로)
+		MakeStructure tmp[] = next;
+		for(int i = 0; i < 4; i++) {		//************1. root가 아닌 트리에서 4번째 연결고리를 생성하려고 할 때 오류표시
+			if (tmp[i] == null) {
+				break;
+			}
+			
+				switch (i) {					//************2. 그 트리 height 한계.(node 개수)문제
+				case 0 :					
+					new OverLap(tmp[i]).VerticalOverLap();
+					break;
+				case 1 :
+					new OverLap(tmp[i]).HorizontalOverLap();
+					break;  
+				case 2 :
+					new OverLap(tmp[i]).VerticalOverLap();
+					break;
+				case 3 :
+					new OverLap(tmp[i]).HorizontalOverLap();
+					break;  
+				}
+		}
+		
+		
+	}
+	
+
 	//현재 List를 리턴한다.
 	public String[] ReturnList() {
 		return list;
