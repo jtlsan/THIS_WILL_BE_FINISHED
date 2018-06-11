@@ -6,16 +6,27 @@ import java.awt.event.*;
 import Structure.*;
 import MindMapPane.DrawInfo;
 
-public class NodeMouseListener extends MouseAdapter{
+public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	JTextField name, x, y, width, height, color;
 	MakeStructure strct;
 	MakeStructure objectStrct;
 	DrawInfo nodeInfo;
 	DrawInfo objectNode;
+	JButton chg;
 	String objectText;
 	JPanel mapPanel;
+	int objectX = 0, objectY = 0;
+	ApplyMouseListener ApplyListener;
+	public NodeMouseListener(MakeStructure strct, DrawInfo nodeInfo, int x, int y) {
+		this.objectX = x;
+		this.objectY = y;
+		this.strct = strct;
+		this.nodeInfo = nodeInfo;
+		Search(this.strct);
+		SearchNode(this.nodeInfo);
+	}
 	public NodeMouseListener(JPanel mapPanel, JTextField name, JTextField x, JTextField y, JTextField width, JTextField height, JTextField color, 
-			MakeStructure strct, DrawInfo nodeInfo) {
+			MakeStructure strct, DrawInfo nodeInfo, JButton chg) {
 		this.mapPanel = mapPanel;
 		this.name = name;
 		this.x = x;
@@ -25,9 +36,11 @@ public class NodeMouseListener extends MouseAdapter{
 		this.color = color;
 		this.strct = strct;
 		this.nodeInfo = nodeInfo;
-		int e = MouseEvent.MOUSE_CLICKED;
+		this.chg = chg;
 		
 	}
+	
+	
 	void redrawNode() {
 		int r = 0, g = 0, b = 0;
 		while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
@@ -39,32 +52,15 @@ public class NodeMouseListener extends MouseAdapter{
 		objectStrct.background = new Color(r, g, b);
 		
 		objectNode.node.setBackground(objectStrct.background);
-		mapPanel.repaint();
-		
-	
-	
-		/*
-		 node = new JLabel(name);
-		node.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		if (structure.width < node.getPreferredSize().width)
-			structure.width = node.getPreferredSize().width;
-		if (structure.height < node.getPreferredSize().height)
-			structure.height = node.getPreferredSize().height;
-		
-		node.setSize(structure.width, structure.height);					
-		node.setLocation(structure.x, structure.y);
-		panel.add(node);
-		//색깔설정
-		node.setBackground(structure.background);
-		node.setOpaque(true);*/
-		 
+		mapPanel.repaint();		 
 	}
-	public void mouseClicked(MouseEvent e) {		//노드색 반전 필요!!
+	public void mousePressed(MouseEvent e) {		 
 		JLabel label = (JLabel)e.getSource();
 		
 			
 		objectText = label.getText();
+		objectX = label.getX();
+		objectY = label.getY();
 		Search(strct);
 		redrawNode();
 		name.setText(objectStrct.name);
@@ -73,17 +69,50 @@ public class NodeMouseListener extends MouseAdapter{
 		width.setText(Integer.toString(objectStrct.width));
 		height.setText(Integer.toString(objectStrct.height));
 		color.setText(Integer.toString(objectStrct.background.getRGB()));
+		
+		MouseListener listeners[] = chg.getMouseListeners();
+		for(int i = 0; i < listeners.length; i++)
+			chg.removeMouseListener(listeners[i]);
 
-
+		chg.addMouseListener(ApplyListener = new ApplyMouseListener(mapPanel, name, x, y, width, height, color, objectStrct, objectNode, strct));
+		mapPanel.repaint();
 	}
+	
+	public void mouseDragged(MouseEvent e) {
+		System.out.println("e.get X, e.getY : " + e.getX() + " " + e.getY());
+		JLabel label = (JLabel)e.getSource();
+		objectX = label.getX();
+		objectY = label.getY();
+		System.out.println("objectX, y : " + objectX + " " + objectY);
+		Search(strct);
+		SearchNode(nodeInfo);
+		System.out.println("After e.getX, e.getY : " + e.getX() + " " + e.getY());
+		
+		
+		objectStrct.x = e.getX() - (int)(objectStrct.width / 2.0);
+		objectStrct.y = e.getY() - (int)(objectStrct.height / 2.0);
+		
+		System.out.println("x : " + objectStrct.x);
+		System.out.println("y : " + objectStrct.y);
+		objectNode.node.setLocation(objectStrct.x, objectStrct.y);
+		
+		name.setText(objectStrct.name);
+		x.setText(Integer.toString(objectStrct.x));
+		y.setText(Integer.toString(objectStrct.y));
+		width.setText(Integer.toString(objectStrct.width));
+		height.setText(Integer.toString(objectStrct.height));
+		color.setText(Integer.toString(objectStrct.background.getRGB()));
+		mapPanel.repaint();
+		
+	}
+	
+	
+	
 	
 	void SearchNode(DrawInfo nodes) {
 		DrawInfo tmp = nodes;
-		if(tmp == null)
-			System.out.println("tmp가 널");
-		if(objectText == null)
-			System.out.println("objecttext가 널");
-		if(objectText.equals(tmp.node.getText()))
+
+		if(objectX == tmp.node.getX() && objectY == tmp.node.getY())
 			objectNode = tmp;
 		
 		else {
@@ -99,7 +128,7 @@ public class NodeMouseListener extends MouseAdapter{
 		
 		MakeStructure tmp = structure;
 		
-		if(objectText.equals(tmp.name)) {
+		if(objectX == tmp.x && objectY == tmp.y) {
 			objectStrct = tmp;
 		}
 		else {		
@@ -114,5 +143,9 @@ public class NodeMouseListener extends MouseAdapter{
 		
 	}
 	
-
+	public void mouseMoved(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
 }

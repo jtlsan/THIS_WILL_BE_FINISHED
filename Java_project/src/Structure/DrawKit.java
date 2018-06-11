@@ -20,10 +20,6 @@ public class DrawKit {
 				y1 = strct.y;
 				x3 = strct.next[i].x + strct.next[i].width;
 				y3 = strct.next[i].y + (int)(strct.next[i].height / 2);
-				/*x2 = x1;
-				y2 = y3;
-				g.drawLine(x1,  y1,  x2,  y2);
-				g.drawLine(x2,  y2,  x3,  y3);*/
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 				
@@ -40,10 +36,6 @@ public class DrawKit {
 				y1 = strct.y + strct.height;
 				x3 = strct.next[i].x + strct.next[i].width;
 				y3 = strct.next[i].y + (int)(strct.next[i].height / 2);
-				/*x2 = x1;
-				y2 = y3;
-				g.drawLine(x1,  y1,  x2,  y2);
-				g.drawLine(x2,  y2,  x3 , y3);*/
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 			}
@@ -65,10 +57,6 @@ public class DrawKit {
 				y1 = strct.y + (int)(strct.height / 2);
 				x3 = strct.next[i].x + (int)(strct.next[i].width / 2);
 				y3 = strct.next[i].y + strct.next[i].height;
-				/*x2 = x3;
-				y2 = y1;
-				g.drawLine(x1,  y1,  x2,  y2);
-				g.drawLine(x2,  y2,  x3,  y3);*/
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 				
@@ -85,10 +73,6 @@ public class DrawKit {
 				y1 = strct.y + (int)(strct.height / 2);
 				x3 = strct.next[i].x + (int)(strct.next[i].width / 2);
 				y3 = strct.next[i].y + strct.next[i].height;
-				/*x2 = x3;
-				y2 = y1;
-				g.drawLine(x1,  y1,  x2,  y2);
-				g.drawLine(x2,  y2,  x3 , y3);*/
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 			}
@@ -110,10 +94,6 @@ public class DrawKit {
 				y1 = strct.y;
 				x3 = strct.next[i].x;
 				y3 = strct.next[i].y + (int)(strct.next[i].height / 2);
-				/*x2 = x1;
-				y2 = y3;
-				g.drawLine(x1,  y1,  x2,  y2);
-				g.drawLine(x2,  y2,  x3,  y3);*/
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 				
@@ -130,10 +110,6 @@ public class DrawKit {
 				y1 = strct.y + strct.height;
 				x3 = strct.next[i].x;
 				y3 = strct.next[i].y + (int)(strct.next[i].height / 2);
-				/*x2 = x1;
-				y2 = y3;
-				g.drawLine(x1,  y1,  x2,  y2);
-				g.drawLine(x2,  y2,  x3 , y3);*/
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 			}
@@ -155,10 +131,6 @@ public class DrawKit {
 				y1 = strct.y + (int)(strct.height / 2);
 				x3 = strct.next[i].x + (int)(strct.next[i].width / 2);
 				y3 = strct.next[i].y;
-				//x2 = x3;
-				//y2 = y1;
-				//g.drawLine(x1,  y1,  x2,  y2);
-				//g.drawLine(x2,  y2,  x3,  y3);
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 				
@@ -175,10 +147,6 @@ public class DrawKit {
 				y1 = strct.y + (int)(strct.height / 2);
 				x3 = strct.next[i].x + (int)(strct.next[i].width / 2);
 				y3 = strct.next[i].y;
-				/*x2 = x3;
-				y2 = y1;
-				g.drawLine(x1,  y1,  x2,  y2);
-				g.drawLine(x2,  y2,  x3 , y3);*/
 				g.drawLine(x1,  y1,  x3,  y3);
 				break;
 			}

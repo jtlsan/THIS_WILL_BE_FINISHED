@@ -39,7 +39,6 @@ public class DrawInfo {
 		node.setBackground(structure.background);
 		node.setOpaque(true);
 		
-		
 		for(int i = 0; i < 4; i++) {
 			if (structure.next[i] == null)
 				break;

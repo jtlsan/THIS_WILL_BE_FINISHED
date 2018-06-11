@@ -201,13 +201,18 @@ public class template extends JFrame{
 				String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
 				struct = new MakeStructure(splitList, null);
 				new OverLap(struct).OverallOverLap();
+
 				panel2 = new MapPanel(struct);
-				panel2.setSize(600,500);
-				nodeInfo = new DrawInfo(struct, panel2);
 				scrollPane2.setViewportView(panel2);
+				new ResizePanelSize(struct, panel2);
+				
 				panel2.setLayout(null);
+				nodeInfo = new DrawInfo(struct, panel2);
+				
 				panel2.setVisible(true);
-				new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo);
+				new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo, chg);
+				
+
 			}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {
@@ -218,7 +223,9 @@ public class template extends JFrame{
 		
 		
 		
+		
 	}
+
 	
 	class MapPanel extends JPanel{
 		MakeStructure strct;
@@ -241,7 +248,7 @@ public class template extends JFrame{
 						x1 = strct.x;
 						y1 = strct.y + (int)(strct.height/2);
 						x2= strct.next[i].x + strct.next[i].width;
-						y2 = strct.y + (int)(strct.next[i].height/2);
+						y2 = strct.next[i].y + (int)(strct.next[i].height/2);
 						g.drawLine(x1,  y1,  x2,  y2);
 						new DrawKit(strct.next[i]).WestLine(g);
 						break;

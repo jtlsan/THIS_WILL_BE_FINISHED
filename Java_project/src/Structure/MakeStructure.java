@@ -58,6 +58,7 @@ public class MakeStructure{
 			for(int i = 0; i < list.length-1; i++) {
 				fixList[i] = list[i + 1];
 			}
+
 			MoveNext();
 		}
 		
@@ -76,12 +77,13 @@ public class MakeStructure{
 			int nextHeight;
 			
 			for(int i = 0, j = 0; i < num; i++) {
-				
+				System.out.println(name + "일 때의 j값 : " + j);
 				if(fixList == null)		//fixList가 null일 경우는 기존의 문자열 List가 끝에 다다라 38번째 코드처럼  null을 리턴하는 경우밖에 없다. 즉  끝 설정
 					break;
 				nextHeight = tabcount(fixList[0]);	
 			//다음 노드의 height가 현재 노드의 height보다 1만큼 높을 경우에만 next로 다음 노드 연결. 그렇지 않을 경우 for문 break.
 				if(nextHeight == treeHeight + 1) {
+					//System.out.println(name + "일 때 next함");
 					next[j] = new MakeStructure(fixList, nextColor);
 					//문자 중앙정렬도 해줘야 x y 를 넘겨줄까?다음구조에
 					if (next[j].fixList == null) {		//List 문자열의 최종에 다다랐을 경우 fixList를 따로 배정하지 않으므로  fixList는 null이 된다.
@@ -91,10 +93,19 @@ public class MakeStructure{
 						fixList = new String[next[j].ReturnFixList().length];
 						fixList = next[j].ReturnFixList();
 					}
-					j++;													//나중에 next[4]넘어가는 순간 오류메시지 출력 기능 넣어도 될 듯
+					j++;
+					//나중에 next[4]넘어가는 순간 오류메시지 출력 기능 넣어도 될 듯
 				}
-				else if (nextHeight <= treeHeight)		//다음 노드의 height가 현재 노드와 같거나 현재 노드보다 낮을 경우 for문 break
+				else if (nextHeight <= treeHeight) {		//다음 노드의 height가 현재 노드와 같거나 현재 노드보다 낮을 경우 for문 break
+					/*
+					String tmp[] = fixList;
+					fixList = new String[tmp.length-1];			
+					for(int k = 0; k < tmp.length-1; k++) {
+						fixList[k] = tmp[k + 1];
+					}
+					*/
 					break;
+				}
 			}
 			
 			
