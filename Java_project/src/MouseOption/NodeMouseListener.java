@@ -1,5 +1,6 @@
 package MouseOption;
 
+import template.ResizePanelSize;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -79,21 +80,19 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	}
 	
 	public void mouseDragged(MouseEvent e) {
-		System.out.println("e.get X, e.getY : " + e.getX() + " " + e.getY());
+		
+		int mouseX = e.getXOnScreen() - 220;
+		int mouseY = e.getYOnScreen() - 110;
 		JLabel label = (JLabel)e.getSource();
 		objectX = label.getX();
 		objectY = label.getY();
-		System.out.println("objectX, y : " + objectX + " " + objectY);
 		Search(strct);
 		SearchNode(nodeInfo);
-		System.out.println("After e.getX, e.getY : " + e.getX() + " " + e.getY());
 		
 		
-		objectStrct.x = e.getX() - (int)(objectStrct.width / 2.0);
-		objectStrct.y = e.getY() - (int)(objectStrct.height / 2.0);
+		objectStrct.x = mouseX - (int)(objectStrct.width / 2.0);
+		objectStrct.y = mouseY - (int)(objectStrct.height / 2.0);
 		
-		System.out.println("x : " + objectStrct.x);
-		System.out.println("y : " + objectStrct.y);
 		objectNode.node.setLocation(objectStrct.x, objectStrct.y);
 		
 		name.setText(objectStrct.name);
@@ -103,7 +102,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		height.setText(Integer.toString(objectStrct.height));
 		color.setText(Integer.toString(objectStrct.background.getRGB()));
 		mapPanel.repaint();
-		
+		new ResizePanelSize(strct, mapPanel);
 	}
 	
 	
