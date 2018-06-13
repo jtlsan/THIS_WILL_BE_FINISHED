@@ -12,8 +12,12 @@ import Structure.OverLap;
 import java.awt.event.*;
 import java.awt.*;
 import java.awt.event.*;
-
+//1. 트리구조안에 color를 getRGB int형으로 저장하는거. 그러면 불러왓을때도 getRGB >> background설정하는거 필요
+//2. 위에있는 변경만
+//3. (인호)color 반전
+//4. COLOR getr getg getb 16진수로ㅇ
 //root가 센터로 가는 거랑 각 노드 문자열이 길어졌을 때 그만큼 크기 커지는거 필요
+//크기조절할때 가끔 위치이동되는거 원인 파악 필요! 아마 resizepanelsize때문일듯
 public class template extends JFrame{
 	private Container c;
 	MakeStructure struct;
@@ -210,6 +214,7 @@ public class template extends JFrame{
 				nodeInfo = new DrawInfo(struct, panel2);
 				
 				panel2.setVisible(true);
+				
 				new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo, chg);
 				
 

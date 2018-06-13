@@ -17,7 +17,10 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	String objectText;
 	JPanel mapPanel;
 	int objectX = 0, objectY = 0;
+	JLabel edge[] = new JLabel[4];
+	JLabel axis[] = new JLabel[4];
 	ApplyMouseListener ApplyListener;
+	int mouseX = 0, mouseY = 0;
 	public NodeMouseListener(MakeStructure strct, DrawInfo nodeInfo, int x, int y) {
 		this.objectX = x;
 		this.objectY = y;
@@ -25,6 +28,8 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		this.nodeInfo = nodeInfo;
 		Search(this.strct);
 		SearchNode(this.nodeInfo);
+		
+		
 	}
 	public NodeMouseListener(JPanel mapPanel, JTextField name, JTextField x, JTextField y, JTextField width, JTextField height, JTextField color, 
 			MakeStructure strct, DrawInfo nodeInfo, JButton chg) {
@@ -81,8 +86,9 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	
 	public void mouseDragged(MouseEvent e) {
 		
-		int mouseX = e.getXOnScreen() - 220;
-		int mouseY = e.getYOnScreen() - 110;
+		mouseX = e.getXOnScreen() - 220;
+		mouseY = e.getYOnScreen() - 110;
+		
 		JLabel label = (JLabel)e.getSource();
 		objectX = label.getX();
 		objectY = label.getY();
@@ -142,9 +148,169 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		
 	}
 	
-	public void mouseMoved(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseMoved(MouseEvent e) {
+		mouseX = e.getXOnScreen() - 220;
+		mouseY = e.getYOnScreen() - 110;
+		System.out.println("ONscreen : " + e.getXOnScreen() + " " + e.getYOnScreen());
+		
+		System.out.println("mouse : " + mouseX + " " + mouseY);
+	}
+	public void mouseExited(MouseEvent e) {
+		mouseX = e.getXOnScreen() - 220;
+		mouseY = e.getYOnScreen() - 110;
+		if (e.getX() < 0 || e.getX() > objectStrct.width || e.getY() < 0 || e.getY() > objectStrct.height)
+			for(int i = 0; i < 4; i++) {
+				edge[i].setVisible(false);
+				edge[i].setOpaque(false);
+				objectNode.node.remove(edge[i]);
+				axis[i].setVisible(false);
+				axis[i].setOpaque(false);
+				objectNode.node.remove(axis[i]);
+			}
+		/*
+		if(mouseX < objectStrct.x || mouseX > objectStrct.x + objectStrct.width || mouseY < objectStrct.y || mouseY > objectStrct.y + objectStrct.height)
+			for(int i = 0; i < 4; i++) {
+				edge[i].setVisible(false);
+				edge[i].setOpaque(false);
+				objectNode.node.remove(edge[i]);
+			}
+		/*
+		for(int i = 0; i < 4; i++) {
+			edge[i].setVisible(false);
+			edge[i].setOpaque(false);
+			objectNode.node.remove(edge[i]);
+		}
+		*/
+	}
+	public void mouseEntered(MouseEvent e) {
+		JLabel label = (JLabel)e.getSource();
+		objectX = label.getX();
+		objectY = label.getY();
+		Search(strct);
+		SearchNode(nodeInfo);
+		mouseX = e.getXOnScreen() - 220;
+		mouseY = e.getYOnScreen() - 110;
+		if(edge[0] != null)
+			for(int i = 0; i < 4; i++) {
+				edge[i].setVisible(false);
+				edge[i].setOpaque(false);
+				objectNode.node.remove(edge[i]);
+				axis[i].setVisible(false);
+				axis[i].setOpaque(false);
+				objectNode.node.remove(axis[i]);
+			}
+		
+		
+		
+		/*
+		JLabel test = new JLabel("root");
+		test.setSize(50,  20);
+		panel2.setLayout(null);
+		test.setLocation(50, 50);
+		panel2.add(test);
+		test.setBackground(Color.BLUE);
+		test.setOpaque(true);
+		*/
+		
+		for(int i = 0; i < 4; i++) {
+			edge[i] = new JLabel();
+			axis[i] = new JLabel();
+			edge[i].setSize(6, 6);
+			axis[i].setSize(6, 6);
+			
+			switch(i) {
+				case 0:
+					edge[i].setLocation(0, 0);
+					label.add(edge[i]);
+					edge[i].setBackground(Color.BLACK);
+					edge[i].setOpaque(true);
+					edge[i].setVisible(true);
+					edge[i].setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
+					axis[i].setLocation(objectStrct.width /2 - 3, 0);
+					label.add(axis[i]);
+					axis[i].setBackground(Color.BLACK);
+					axis[i].setOpaque(true);
+					axis[i].setVisible(true);
+					axis[i].setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+					break;
+				case 1:
+					edge[i].setLocation(objectStrct.width - 5, 0);
+					label.add(edge[i]);
+					edge[i].setBackground(Color.BLACK);
+					edge[i].setOpaque(true);
+					edge[i].setVisible(true);
+					edge[i].setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
+					axis[i].setLocation(objectStrct.width - 6, objectStrct.height/2 - 3);
+					label.add(axis[i]);
+					axis[i].setBackground(Color.BLACK);
+					axis[i].setOpaque(true);
+					axis[i].setVisible(true);
+					axis[i].setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+					break;
+				case 2:
+					edge[i].setLocation(objectStrct.width - 5, objectStrct.height - 5);
+					label.add(edge[i]);
+					edge[i].setBackground(Color.BLACK);
+					edge[i].setOpaque(true);
+					edge[i].setVisible(true);
+					edge[i].setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
+					axis[i].setLocation(objectStrct.width/2 - 3, objectStrct.height - 6);
+					label.add(axis[i]);
+					axis[i].setBackground(Color.BLACK);
+					axis[i].setOpaque(true);
+					axis[i].setVisible(true);
+					axis[i].setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+					break;
+				case 3:
+					edge[i].setLocation(0, objectStrct.height - 5);
+					label.add(edge[i]);
+					edge[i].setBackground(Color.BLACK);
+					edge[i].setOpaque(true);
+					edge[i].setVisible(true);
+					edge[i].setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
+					axis[i].setLocation(0, objectStrct.height/2 - 3);
+					label.add(axis[i]);
+					axis[i].setBackground(Color.BLACK);
+					axis[i].setOpaque(true);
+					axis[i].setVisible(true);
+					axis[i].setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+					break;
+			}
+			
+		}
+		for (int i = 0; i < 4; i++) {
+			switch(i) {
+				case 0:
+					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					
+					break;
+				
+				case 1:
+					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					break;
+					
+				case 2:
+					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					break;
+					
+				case 3:
+					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					break;
+			}
+		}
+	}
 	public void mouseClicked(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 }

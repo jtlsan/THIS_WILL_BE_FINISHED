@@ -28,11 +28,12 @@ public class AddMouseListener {
 		
 		AddListener(this.nodeInfo);
 	}
-	
+
 	void AddListener(DrawInfo nodeState) {
 		if(nodeState != null) {
-			nodeState.node.addMouseListener(new NodeMouseListener(mapPanel, name, x, y, width, height, color, strct, nodeInfo, chg));
-			nodeState.node.addMouseMotionListener(new NodeMouseListener(mapPanel, name, x, y, width, height, color, strct, nodeInfo, chg));
+			NodeMouseListener mListener = new NodeMouseListener(mapPanel, name, x, y, width, height, color, strct, nodeInfo, chg);
+			nodeState.node.addMouseListener(mListener);
+			nodeState.node.addMouseMotionListener(mListener);
 			for(int i = 0; i < nodeState.next.length; i++) {
 				if (nodeState.next[i] == null)
 					break;
