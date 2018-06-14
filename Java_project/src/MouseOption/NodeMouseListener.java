@@ -16,7 +16,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	JButton chg;
 	String objectText;
 	JPanel mapPanel;
-	int objectX = 0, objectY = 0;
+	int objectX = 0, objectY = 0, maxX = 0, maxY = 0;
 	JLabel edge[] = new JLabel[4];
 	JLabel axis[] = new JLabel[4];
 	ApplyMouseListener ApplyListener;
@@ -48,14 +48,12 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	
 	
 	void redrawNode() {
-		int r = 0, g = 0, b = 0;
-		while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
-			r = (int)(Math.random() * 256);
-			g = (int)(Math.random() * 256);
-			b = (int)(Math.random() * 256);
-		}
 		SearchNode(nodeInfo);
-		objectStrct.background = new Color(r, g, b);
+		objectStrct.r = Math.abs(objectStrct.r - 255);
+		objectStrct.g = Math.abs(objectStrct.g - 255);
+		objectStrct.b = Math.abs(objectStrct.b - 255);
+		System.out.println(objectStrct.r + " " + objectStrct.g + " " + objectStrct.b);
+		objectStrct.background = new Color(objectStrct.r, objectStrct.g, objectStrct.b);
 		
 		objectNode.node.setBackground(objectStrct.background);
 		mapPanel.repaint();		 
@@ -63,7 +61,8 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	public void mousePressed(MouseEvent e) {		 
 		JLabel label = (JLabel)e.getSource();
 		
-			
+		maxX = new ResizePanelSize(strct).maxX;
+		maxY = new ResizePanelSize(strct).maxY;
 		objectText = label.getText();
 		objectX = label.getX();
 		objectY = label.getY();
@@ -74,7 +73,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		y.setText(Integer.toString(objectStrct.y));
 		width.setText(Integer.toString(objectStrct.width));
 		height.setText(Integer.toString(objectStrct.height));
-		color.setText(Integer.toString(objectStrct.background.getRGB()));
+		color.setText((Integer.toHexString(objectStrct.r) + Integer.toHexString(objectStrct.g) + Integer.toHexString(objectStrct.b)).toUpperCase());
 		
 		MouseListener listeners[] = chg.getMouseListeners();
 		for(int i = 0; i < listeners.length; i++)
@@ -85,15 +84,22 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	}
 	
 	public void mouseDragged(MouseEvent e) {
-		
-		mouseX = e.getXOnScreen() - 220;
-		mouseY = e.getYOnScreen() - 110;
-		
 		JLabel label = (JLabel)e.getSource();
 		objectX = label.getX();
 		objectY = label.getY();
 		Search(strct);
 		SearchNode(nodeInfo);
+		try {
+			mouseX = (int)objectNode.node.getParent().getMousePosition().getX();
+			mouseY = (int)objectNode.node.getParent().getMousePosition().getY();
+			
+		}
+		catch(NullPointerException E) {
+			
+		}
+	
+		
+		
 		
 		
 		objectStrct.x = mouseX - (int)(objectStrct.width / 2.0);
@@ -106,9 +112,9 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		y.setText(Integer.toString(objectStrct.y));
 		width.setText(Integer.toString(objectStrct.width));
 		height.setText(Integer.toString(objectStrct.height));
-		color.setText(Integer.toString(objectStrct.background.getRGB()));
+		color.setText((Integer.toHexString(objectStrct.r) + Integer.toHexString(objectStrct.g) + Integer.toHexString(objectStrct.b)).toUpperCase());
 		mapPanel.repaint();
-		new ResizePanelSize(strct, mapPanel);
+		
 	}
 	
 	
@@ -148,13 +154,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		
 	}
 	
-	public void mouseMoved(MouseEvent e) {
-		mouseX = e.getXOnScreen() - 220;
-		mouseY = e.getYOnScreen() - 110;
-		System.out.println("ONscreen : " + e.getXOnScreen() + " " + e.getYOnScreen());
-		
-		System.out.println("mouse : " + mouseX + " " + mouseY);
-	}
+	public void mouseMoved(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {
 		mouseX = e.getXOnScreen() - 220;
 		mouseY = e.getYOnScreen() - 110;
@@ -167,20 +167,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 				axis[i].setOpaque(false);
 				objectNode.node.remove(axis[i]);
 			}
-		/*
-		if(mouseX < objectStrct.x || mouseX > objectStrct.x + objectStrct.width || mouseY < objectStrct.y || mouseY > objectStrct.y + objectStrct.height)
-			for(int i = 0; i < 4; i++) {
-				edge[i].setVisible(false);
-				edge[i].setOpaque(false);
-				objectNode.node.remove(edge[i]);
-			}
-		/*
-		for(int i = 0; i < 4; i++) {
-			edge[i].setVisible(false);
-			edge[i].setOpaque(false);
-			objectNode.node.remove(edge[i]);
-		}
-		*/
+		
 	}
 	public void mouseEntered(MouseEvent e) {
 		JLabel label = (JLabel)e.getSource();
@@ -190,28 +177,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		SearchNode(nodeInfo);
 		mouseX = e.getXOnScreen() - 220;
 		mouseY = e.getYOnScreen() - 110;
-		if(edge[0] != null)
-			for(int i = 0; i < 4; i++) {
-				edge[i].setVisible(false);
-				edge[i].setOpaque(false);
-				objectNode.node.remove(edge[i]);
-				axis[i].setVisible(false);
-				axis[i].setOpaque(false);
-				objectNode.node.remove(axis[i]);
-			}
-		
-		
-		
-		/*
-		JLabel test = new JLabel("root");
-		test.setSize(50,  20);
-		panel2.setLayout(null);
-		test.setLocation(50, 50);
-		panel2.add(test);
-		test.setBackground(Color.BLUE);
-		test.setOpaque(true);
-		*/
-		
+
 		for(int i = 0; i < 4; i++) {
 			edge[i] = new JLabel();
 			axis[i] = new JLabel();
@@ -312,5 +278,15 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		}
 	}
 	public void mouseClicked(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+		new ResizePanelSize(strct, mapPanel);
+		for(int i = 0; i < 4; i++) {
+			edge[i].setVisible(false);
+			edge[i].setOpaque(false);
+			objectNode.node.remove(edge[i]);
+			axis[i].setVisible(false);
+			axis[i].setOpaque(false);
+			objectNode.node.remove(axis[i]);
+		}
+	}
 }

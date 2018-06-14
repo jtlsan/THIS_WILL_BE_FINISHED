@@ -32,9 +32,19 @@ public class ApplyMouseListener extends MouseAdapter{
 		objectStrct.y = Integer.parseInt(y.getText());
 		objectStrct.width = Integer.parseInt(width.getText());
 		objectStrct.height = Integer.parseInt(height.getText());
-		objectStrct.background = new Color(Integer.parseInt(color.getText()));
+		//objectStrct.background = new Color(Integer.parseInt(color.getText()));
 		objectNode.node.setLocation(objectStrct.x, objectStrct.y);
 		objectNode.node.setSize(objectStrct.width, objectStrct.height);
+		String colorText = color.getText();
+		int intColor = Integer.parseInt(color.getText(), 16);
+		String setColor[] = new String[3];
+		for(int i = 0; i < 3; i++) {
+			setColor[i] = colorText.substring(i * 2, (i+1) * 2 );
+		}
+		objectStrct.r = Integer.parseInt(setColor[0], 16);
+		objectStrct.g = Integer.parseInt(setColor[1], 16);
+		objectStrct.b = Integer.parseInt(setColor[2], 16);
+		objectStrct.background = new Color(objectStrct.r, objectStrct.g, objectStrct.b);	
 		objectNode.node.setBackground(objectStrct.background);
 		new ResizePanelSize(strct, mapPanel);
 		

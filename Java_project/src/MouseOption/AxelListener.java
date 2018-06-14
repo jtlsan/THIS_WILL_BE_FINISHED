@@ -97,7 +97,7 @@ public class AxelListener implements MouseListener, MouseMotionListener{
 		y.setText(Integer.toString(objectStrct.y));
 		width.setText(Integer.toString(objectStrct.width));
 		height.setText(Integer.toString(objectStrct.height));
-		color.setText(Integer.toString(objectStrct.background.getRGB()));
+		color.setText((Integer.toHexString(objectStrct.r) + Integer.toHexString(objectStrct.g) + Integer.toHexString(objectStrct.b)).toUpperCase());
 		
 		axis[0].setLocation(objectStrct.width / 2 - 3, 0);
 		axis[1].setLocation(objectStrct.width - 6, objectStrct.height/2 - 3);
@@ -114,6 +114,9 @@ public class AxelListener implements MouseListener, MouseMotionListener{
 	
 	public void mouseReleased(MouseEvent e) {
 		for(int i = 0; i < 4; i++) {
+			edge[i].setVisible(false);
+			edge[i].setOpaque(false);
+			objectNode.node.remove(edge[i]);
 			axis[i].setVisible(false);
 			axis[i].setOpaque(false);
 			objectNode.node.remove(axis[i]);

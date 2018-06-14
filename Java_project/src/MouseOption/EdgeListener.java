@@ -38,69 +38,139 @@ public class EdgeListener implements MouseListener, MouseMotionListener{
 	
 	public void mouseDragged(MouseEvent e) {
 		
-
+/*
 		int mouseX = e.getXOnScreen() - 220;
 		int mouseY = e.getYOnScreen() - 110;
+		*/
+		int mouseX = (int)objectNode.node.getParent().getMousePosition().getX();
+		int mouseY = (int)objectNode.node.getParent().getMousePosition().getY();
 		
 		
 		switch(way) {
 			case 0:
 				
-				if(mouseX < objectStrct.x || mouseY < objectStrct.y) {
+				if(mouseX < objectStrct.x && mouseY < objectStrct.y) {
 					objectStrct.width += Math.abs(objectStrct.x - mouseX);
 					objectStrct.height += Math.abs(objectStrct.y - mouseY);
-					System.out.println("ÀÌÈÄ : " + objectStrct.width);
-					objectStrct.x = mouseX;
-					objectStrct.y = mouseY;
 				}
-				else  if (mouseY >= objectStrct.y || mouseX >= objectStrct.x){
+				else if (mouseX == objectStrct.x && mouseY < objectStrct.y) {
+					objectStrct.height += Math.abs(objectStrct.y - mouseY);					
+				}
+				else if (mouseX == objectStrct.x && mouseY > objectStrct.y) {
+					objectStrct.height -= Math.abs(objectStrct.y - mouseY);			
+				}
+				else if (mouseX > objectStrct.x && mouseY == objectStrct.y) {
 					objectStrct.width -= Math.abs(objectStrct.x - mouseX);
-					objectStrct.height -= Math.abs(objectStrct.y - mouseY);
-					objectStrct.x = mouseX;
-					objectStrct.y = mouseY;
 				}
+				else if (mouseX < objectStrct.x && mouseY == objectStrct.y)
+					objectStrct.width += Math.abs(objectStrct.x - mouseX);
+				else if (mouseX > objectStrct.x && mouseY < objectStrct.y) {
+					objectStrct.width -= Math.abs(objectStrct.x - mouseX);
+					objectStrct.height += Math.abs(objectStrct.y - mouseY);
+				}
+				else if (mouseX < objectStrct.x && mouseY > objectStrct.y) {
+					objectStrct.width += Math.abs(objectStrct.x - mouseX);
+					objectStrct.height -= Math.abs(objectStrct.y - mouseY);		
+				}
+				else  {
+					objectStrct.width -= Math.abs(mouseX - objectStrct.x);
+					objectStrct.height -= Math.abs(mouseY - objectStrct.y);
+				}
+				objectStrct.x = mouseX;
+				objectStrct.y = mouseY;
 				break;
 			case 1:
-				if(mouseX > (objectStrct.x + objectStrct.width) || mouseY < objectStrct.y) {
+				if(mouseX > (objectStrct.x + objectStrct.width) && mouseY < objectStrct.y) {
 					objectStrct.width += Math.abs(objectStrct.x + objectStrct.width - mouseX);
 					objectStrct.height += Math.abs(objectStrct.y - mouseY);
-					objectStrct.x = mouseX - objectStrct.width;
-					objectStrct.y = mouseY;
 				}
-				else if (mouseY > objectStrct.y || mouseX < objectStrct.x + objectStrct.width) {
+				else if (mouseX == objectStrct.x + objectStrct.width && mouseY < objectStrct.y) {
+					objectStrct.height += Math.abs(objectStrct.y - mouseY);					
+				}
+				else if (mouseX == objectStrct.x + objectStrct.width && mouseY > objectStrct.y) {
+					objectStrct.height -= Math.abs(objectStrct.y - mouseY);			
+				}
+				else if (mouseX > objectStrct.x + objectStrct.width && mouseY == objectStrct.y) {
+					objectStrct.width += Math.abs(objectStrct.x + objectStrct.width - mouseX);
+				}
+				else if (mouseX < objectStrct.x + objectStrct.width && mouseY == objectStrct.y)
+					objectStrct.width -= Math.abs(objectStrct.x + objectStrct.width - mouseX);
+				else if(mouseX < (objectStrct.x + objectStrct.width) && mouseY < objectStrct.y) {
+					objectStrct.width -= Math.abs(objectStrct.x + objectStrct.width - mouseX);
+					objectStrct.height += Math.abs(objectStrct.y - mouseY);
+				}
+				else if (mouseY > objectStrct.y && mouseX > objectStrct.x + objectStrct.width) {
+					objectStrct.width += Math.abs(objectStrct.x + objectStrct.width - mouseX);
+					objectStrct.height -= Math.abs(objectStrct.y - mouseY);
+				}
+				else  {
 					objectStrct.width -= Math.abs(objectStrct.x + objectStrct.width - mouseX);
 					objectStrct.height -= Math.abs(objectStrct.y - mouseY);
-					objectStrct.x = mouseX - objectStrct.width;
-					objectStrct.y = mouseY;
 				}
+				objectStrct.x = mouseX - objectStrct.width;
+				objectStrct.y = mouseY;
 				break;
 			case 2:
-				if(mouseX > objectStrct.x + objectStrct.width || mouseY > objectStrct.y + objectStrct.height) {
+				if(mouseX > objectStrct.x + objectStrct.width && mouseY > objectStrct.y + objectStrct.height) {
 					objectStrct.width += Math.abs(objectStrct.x + objectStrct.width - mouseX);
 					objectStrct.height += Math.abs(objectStrct.y + objectStrct.height - mouseY);
-					objectStrct.x = mouseX - objectStrct.width;
-					objectStrct.y = mouseY - objectStrct.height;
 				}
-				else if (mouseY < objectStrct.y + objectStrct.height || mouseX < objectStrct.x + objectStrct.width) {
+				else if (mouseX == objectStrct.x + objectStrct.width && mouseY < objectStrct.y + objectStrct.height) {
+					objectStrct.height -= Math.abs(objectStrct.y + objectStrct.height - mouseY);					
+				}
+				else if (mouseX == objectStrct.x + objectStrct.width && mouseY > objectStrct.y + objectStrct.height) {
+					objectStrct.height += Math.abs(objectStrct.y + objectStrct.height - mouseY);			
+				}
+				else if (mouseX > objectStrct.x + objectStrct.width && mouseY == objectStrct.y + objectStrct.height) {
+					objectStrct.width += Math.abs(objectStrct.x + objectStrct.width - mouseX);
+				}
+				else if (mouseX < objectStrct.x + objectStrct.width && mouseY == objectStrct.y + objectStrct.height)
+					objectStrct.width -= Math.abs(objectStrct.x + objectStrct.width - mouseX);
+				else if (mouseX > objectStrct.x + objectStrct.width && mouseY < objectStrct.y + objectStrct.height) {
+					objectStrct.width += Math.abs(objectStrct.x + objectStrct.width - mouseX);
+					objectStrct.height -= Math.abs(objectStrct.y + objectStrct.height - mouseY);
+				}
+				else if (mouseX < objectStrct.x + objectStrct.width && mouseY > objectStrct.y + objectStrct.height) {
+					objectStrct.width -= Math.abs(objectStrct.x + objectStrct.width - mouseX);
+					objectStrct.height += Math.abs(objectStrct.y + objectStrct.height - mouseY);		
+				}
+				else  {
 					objectStrct.width -= Math.abs(objectStrct.x + objectStrct.width - mouseX);
 					objectStrct.height -= Math.abs(objectStrct.y + objectStrct.height - mouseY);
-					objectStrct.x = mouseX - objectStrct.width;
-					objectStrct.y = mouseY - objectStrct.height;
 				}
+				objectStrct.x = mouseX - objectStrct.width;
+				objectStrct.y = mouseY - objectStrct.height;
 				break;
 			case 3:
-				if(mouseX < objectStrct.x || mouseY > objectStrct.y + objectStrct.height) {
+				if(mouseX < objectStrct.x && mouseY > objectStrct.y + objectStrct.height) {
 					objectStrct.width += Math.abs(objectStrct.x - mouseX);
 					objectStrct.height += Math.abs(objectStrct.y + objectStrct.height - mouseY);
-					objectStrct.x = mouseX;
-					objectStrct.y = mouseY - objectStrct.height;
 				}
-				else if (mouseY < objectStrct.y + objectStrct.height || mouseX > objectStrct.x) {
+				else if (mouseX == objectStrct.x && mouseY < objectStrct.y + objectStrct.height) {
+					objectStrct.height -= Math.abs(objectStrct.y + objectStrct.height - mouseY);					
+				}
+				else if (mouseX == objectStrct.x && mouseY > objectStrct.y + objectStrct.height) {
+					objectStrct.height += Math.abs(objectStrct.y + objectStrct.height - mouseY);			
+				}
+				else if (mouseX > objectStrct.x && mouseY == objectStrct.y + objectStrct.height) {
 					objectStrct.width -= Math.abs(objectStrct.x - mouseX);
-					objectStrct.height -= Math.abs(objectStrct.y + objectStrct.height - mouseY);
-					objectStrct.x = mouseX;
-					objectStrct.y = mouseY - objectStrct.height;
 				}
+				else if (mouseX < objectStrct.x && mouseY == objectStrct.y + objectStrct.height)
+					objectStrct.width += Math.abs(objectStrct.x - mouseX);
+				else if (mouseX > objectStrct.x && mouseY > objectStrct.y + objectStrct.height) {
+					objectStrct.width -= Math.abs(objectStrct.x - mouseX);
+					objectStrct.height += Math.abs(objectStrct.y + objectStrct.height - mouseY);
+				}
+				else if (mouseX < objectStrct.x && mouseY < objectStrct.y + objectStrct.height) {
+					objectStrct.width += Math.abs(objectStrct.x - mouseX);
+					objectStrct.height -= Math.abs(objectStrct.y + objectStrct.height - mouseY);		
+				}
+				else  {
+					objectStrct.width -= mouseX - objectStrct.x;
+					objectStrct.height -= (objectStrct.y + objectStrct.height - mouseY);
+				}
+				objectStrct.x = mouseX;
+				objectStrct.y = mouseY - objectStrct.height;
 				break;
 			
 		}
@@ -113,7 +183,7 @@ public class EdgeListener implements MouseListener, MouseMotionListener{
 		y.setText(Integer.toString(objectStrct.y));
 		width.setText(Integer.toString(objectStrct.width));
 		height.setText(Integer.toString(objectStrct.height));
-		color.setText(Integer.toString(objectStrct.background.getRGB()));
+		color.setText((Integer.toHexString(objectStrct.r) + Integer.toHexString(objectStrct.g) + Integer.toHexString(objectStrct.b)).toUpperCase());
 		
 		edge[0].setLocation(0, 0);
 		edge[1].setLocation(objectStrct.width - 6, 0);
@@ -123,8 +193,9 @@ public class EdgeListener implements MouseListener, MouseMotionListener{
 		axis[1].setLocation(objectStrct.width - 6, objectStrct.height/2 - 3);
 		axis[2].setLocation(objectStrct.width/2 - 3, objectStrct.height - 6);
 		axis[3].setLocation(0, objectStrct.height/2 - 3);
-		edge[0].getParent().repaint();
+		mapPanel.revalidate();
 		mapPanel.repaint();
+		
 		
 	}
 	
@@ -133,6 +204,9 @@ public class EdgeListener implements MouseListener, MouseMotionListener{
 			edge[i].setVisible(false);
 			edge[i].setOpaque(false);
 			objectNode.node.remove(edge[i]);
+			axis[i].setVisible(false);
+			axis[i].setOpaque(false);
+			objectNode.node.remove(axis[i]);
 		}
 
 	}

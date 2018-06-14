@@ -16,14 +16,23 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ResizePanelSize {
-	int minX = 0, minY = 0, maxX = 600, maxY = 500;
+	public int minX = 0, minY = 0, maxX = 600, maxY = 500;
 	MakeStructure strct;
 	JPanel panel;
+	public ResizePanelSize(MakeStructure strct) {
+		this.strct = strct;
+		GetMinValue(this.strct);
+		GetMaxValue(this.strct);
+		maxX -= minX;
+		maxY -= minY;
+	}
 	public ResizePanelSize(MakeStructure strct, JPanel panel) {
 		this.strct = strct;
 		this.panel = panel;
-		GetMaxValue(this.strct);
 		GetMinValue(this.strct);
+		GetMaxValue(this.strct);
+		maxX -= minX;
+		maxY -= minY;
 		ShiftNode(strct);
 		panel.setPreferredSize(new Dimension(maxX, maxY));
 	}

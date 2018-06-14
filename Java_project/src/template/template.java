@@ -12,12 +12,16 @@ import Structure.OverLap;
 import java.awt.event.*;
 import java.awt.*;
 import java.awt.event.*;
-//1. 트리구조안에 color를 getRGB int형으로 저장하는거. 그러면 불러왓을때도 getRGB >> background설정하는거 필요
 //2. 위에있는 변경만
-//3. (인호)color 반전
-//4. COLOR getr getg getb 16진수로ㅇ
-//root가 센터로 가는 거랑 각 노드 문자열이 길어졌을 때 그만큼 크기 커지는거 필요
-//크기조절할때 가끔 위치이동되는거 원인 파악 필요! 아마 resizepanelsize때문일듯
+//color 5자리일 때 고치기
+//=======================================밑 : 해결====================================================
+//3. (인호)color 반전 >>> makestructure이랑 nodemouselitener바꿈
+//가끔 axis edge노드 남아있는거 >>> templete수정(클래하나 생성, 적용버튼 클릭했을 때 리스너 두개 추가)
+//resizepanel수정
+//5. 가끔 자리배치 안될 경우가 있음. >>> overlap클래스 고침
+//크기조절할때 가끔 위치이동되는거 원인 파악 필요! >> edge, axel 클래스 고침
+//1. 트리구조안에 color를 getRGB int형으로 저장하는거. 그러면 불러왓을때도 getRGB >> background설정하는거 필요 >>>> 4번으로 수정
+//4. COLOR getr getg getb 16진수로ㅇ >>> 트리구조에 r,g,b값 저장할 수 있게 해놓음. >> mouseoption패키지 고침
 public class template extends JFrame{
 	private Container c;
 	MakeStructure struct;
@@ -29,7 +33,7 @@ public class template extends JFrame{
 		c = getContentPane();
 		
 		creatMenu();
-		creatTool();
+		
 		creatPane();
 		setSize(1050,700);
 		setVisible(true);
@@ -48,45 +52,7 @@ public class template extends JFrame{
 		
 		setJMenuBar(mb);
 	}
-	private void creatTool() {
-	      JToolBar toolBar = new JToolBar();
-	      toolBar.setFloatable(false);
-	      toolBar.setBackground(Color.LIGHT_GRAY);
-	      
-	      JButton newBtn = new JButton("새로만들기");
-	      newBtn.setToolTipText("파일을 생성합니다");
-	      toolBar.add(newBtn);               // 툴팁달때는 이렇게
-	      
-	      JButton openBtn = new JButton("열기");
-	      openBtn.setToolTipText("파일을 엽니다");
-	      toolBar.add(openBtn);
-	      
-	      
-	      JButton saveBtn = new JButton("저장");
-	      
-	      saveBtn.setToolTipText("파일을 저장합니다");
-	      toolBar.add(saveBtn);
-	      saveBtn.addMouseListener(new MouseListener() {
-	         public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
-	            
-	            Input tmp = new Input();
-	            tmp.StoreJson(struct);//
-	            
-	         }
-	         public void mouseReleased(MouseEvent e) {}
-	         public void mouseClicked(MouseEvent e) {}
-	         public void mouseEntered(MouseEvent e) {}
-	         public void mouseExited(MouseEvent e) {}
-	      });
-	      
-	      toolBar.add(new JButton("다른이름으로 저장"));
-	      toolBar.add(new JButton("닫기"));
-	      toolBar.add(new JButton("적용"));
-	      toolBar.add(new JButton("변경"));
-	      
-	      c.add(toolBar, BorderLayout.NORTH);
-	}
-
+	
 	private void creatPane() {
 		
 		JPanel panel1 = new JPanel();
@@ -216,7 +182,9 @@ public class template extends JFrame{
 				panel2.setVisible(true);
 				
 				new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo, chg);
-				
+				RemoveNode remove;
+				panel2.addMouseListener(remove = new RemoveNode(nodeInfo));
+				panel2.addMouseMotionListener(remove);
 
 			}
 			public void mouseEntered(MouseEvent e) {}
@@ -225,7 +193,43 @@ public class template extends JFrame{
 
 			}
 		});
-		
+		//----------------------------------tool---------------------------
+		 JToolBar toolBar = new JToolBar();
+	      toolBar.setFloatable(false);
+	      
+	      
+	      JButton newBtn = new JButton("새로만들기");
+	      newBtn.setToolTipText("파일을 생성합니다");
+	      toolBar.add(newBtn);               // 툴팁달때는 이렇게
+	      
+	      JButton openBtn = new JButton("열기");
+	      openBtn.setToolTipText("파일을 엽니다");
+	      toolBar.add(openBtn);
+	      
+	      
+	      JButton saveBtn = new JButton("저장");
+	      
+	      saveBtn.setToolTipText("파일을 저장합니다");
+	      toolBar.add(saveBtn);
+	      saveBtn.addMouseListener(new MouseListener() {
+	         public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+	            
+	            Input tmp = new Input();
+	            tmp.StoreJson(struct);//
+	            
+	         }
+	         public void mouseReleased(MouseEvent e) {}
+	         public void mouseClicked(MouseEvent e) {}
+	         public void mouseEntered(MouseEvent e) {}
+	         public void mouseExited(MouseEvent e) {}
+	      });
+	      
+	      toolBar.add(new JButton("다른이름으로 저장"));
+	      toolBar.add(new JButton("닫기"));
+	      toolBar.add(new JButton("적용"));
+	      toolBar.add(new JButton("변경"));
+	      
+	      c.add(toolBar, BorderLayout.NORTH);
 		
 		
 		
@@ -294,6 +298,32 @@ public class template extends JFrame{
 			}
 		}
 	}
+	
+	class RemoveNode extends MouseAdapter{//moved 안되면 entered해보기
+		DrawInfo nodeinfo;
+		public RemoveNode(DrawInfo nodeinfo) {
+			this.nodeinfo = nodeinfo;
+		}
+		
+		void Remove(DrawInfo nodePointer) {
+			DrawInfo tmp = nodePointer;
+			for(int i = 0; i < tmp.node.getComponents().length; i++) {
+				tmp.node.getComponent(i).setVisible(false);
+			}
+			for(int i = 0; i < 4; i++) {
+				if (tmp.next[i] == null)
+					break;
+				Remove(tmp.next[i]);
+			}
+		}
+		public void mouseEntered(MouseEvent e) {
+			Remove(nodeinfo);
+			}
+		public void mouseMoved(MouseEvent e) {
+			Remove(nodeinfo);
+		}
+		}
+	
 
 
 	public static void main(String[] args) {

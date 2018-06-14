@@ -14,6 +14,7 @@ public class MakeStructure{
 	String fixList[];
 	Color nextColor;
 	public MakeStructure next[] = new MakeStructure[4];		//하나의 노드에 붙는 다른 노드들의 최대 개수
+	public int r = 0, g = 0, b = 0;
 	
 	public MakeStructure(int treeHeight, int x, int y, int width, int height, Color background, String name) {
 		this.treeHeight = treeHeight;
@@ -31,26 +32,31 @@ public class MakeStructure{
 		name = list[0].trim();
 		width = 50;
 		height = 20;
+		int tmpR = 0, tmpG = 0, tmpB = 0;
 		this.background = background;
-		int r = 0, g = 0, b = 0;
 		
 		if(background == null) {
 			while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
-				r = (int)(Math.random() * 256);
-				g = (int)(Math.random() * 256);
-				b = (int)(Math.random() * 256);
+				r = (int)(Math.random() * 255);
+				g = (int)(Math.random() * 255);
+				b = (int)(Math.random() * 255);
 			}
 			this.background = new Color(r, g, b);
-			r = 0; g = 0; b = 0;
+			System.out.println("r : " + r+ "g : " + g + "b : " + b);
+		}
+		else {
+			r = background.getRed();
+			g = background.getGreen();
+			b = background.getBlue();
 		}
 		
-		while(r < 100 || g < 100 || b < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
-			r = (int)(Math.random() * 256);
-			g = (int)(Math.random() * 256);
-			b = (int)(Math.random() * 256);
+		while(tmpR < 100 || tmpG < 100 || tmpB < 100) {		//배경이 너무 진해서 글자가 안보이는 것 방지
+			tmpR = (int)(Math.random() * 256);
+			tmpG = (int)(Math.random() * 256);
+			tmpB = (int)(Math.random() * 256);
 		}
 		
-		nextColor = new Color(r, g, b);
+		nextColor = new Color(tmpR, tmpG, tmpB);
 		
 		
 		if (list.length > 1) {								//fixList는 list의 배열들을 한 칸씩 앞으로 당긴 것(ex) fixList[0] == List[1];
@@ -77,7 +83,6 @@ public class MakeStructure{
 			int nextHeight;
 			
 			for(int i = 0, j = 0; i < num; i++) {
-				System.out.println(name + "일 때의 j값 : " + j);
 				if(fixList == null)		//fixList가 null일 경우는 기존의 문자열 List가 끝에 다다라 38번째 코드처럼  null을 리턴하는 경우밖에 없다. 즉  끝 설정
 					break;
 				nextHeight = tabcount(fixList[0]);	
