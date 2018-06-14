@@ -16,13 +16,16 @@ public class MakeStructure{
 	public MakeStructure next[] = new MakeStructure[4];		//하나의 노드에 붙는 다른 노드들의 최대 개수
 	public int r = 0, g = 0, b = 0;
 	
-	public MakeStructure(int treeHeight, int x, int y, int width, int height, Color background, String name) {
+	public MakeStructure(int treeHeight, int x, int y, int width, int height, int r, int g , int b, String name) {
 		this.treeHeight = treeHeight;
 		this.x = x;
 		this.y = y;
+		this.r = r;
+		this.g = g;
+		this.b = b;
 		this.width = width;
 		this.height = height;
-		this.background = background;
+		this.background = new Color(r, g, b);
 		this.name = name;
 	}
 											

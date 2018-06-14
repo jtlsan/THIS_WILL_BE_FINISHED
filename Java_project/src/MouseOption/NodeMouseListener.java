@@ -13,7 +13,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	MakeStructure objectStrct;
 	DrawInfo nodeInfo;
 	DrawInfo objectNode;
-	JButton chg;
+	JButton chg, applybtn;
 	String objectText;
 	JPanel mapPanel;
 	int objectX = 0, objectY = 0, maxX = 0, maxY = 0;
@@ -32,7 +32,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		
 	}
 	public NodeMouseListener(JPanel mapPanel, JTextField name, JTextField x, JTextField y, JTextField width, JTextField height, JTextField color, 
-			MakeStructure strct, DrawInfo nodeInfo, JButton chg) {
+			MakeStructure strct, DrawInfo nodeInfo, JButton chg, JButton applybtn) {
 		this.mapPanel = mapPanel;
 		this.name = name;
 		this.x = x;
@@ -43,6 +43,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		this.strct = strct;
 		this.nodeInfo = nodeInfo;
 		this.chg = chg;
+		this.applybtn = applybtn;
 		
 	}
 	
@@ -80,6 +81,8 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 			chg.removeMouseListener(listeners[i]);
 
 		chg.addMouseListener(ApplyListener = new ApplyMouseListener(mapPanel, name, x, y, width, height, color, objectStrct, objectNode, strct));
+		applybtn.addMouseListener(ApplyListener = new ApplyMouseListener(mapPanel, name, x, y, width, height, color, objectStrct, objectNode, strct));
+		
 		mapPanel.repaint();
 	}
 	
@@ -157,7 +160,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 	public void mouseMoved(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {
 		mouseX = e.getXOnScreen() - 220;
-		mouseY = e.getYOnScreen() - 110;
+		mouseY = e.getYOnScreen() - 110;/*
 		if (e.getX() < 0 || e.getX() > objectStrct.width || e.getY() < 0 || e.getY() > objectStrct.height)
 			for(int i = 0; i < 4; i++) {
 				edge[i].setVisible(false);
@@ -166,7 +169,7 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 				axis[i].setVisible(false);
 				axis[i].setOpaque(false);
 				objectNode.node.remove(axis[i]);
-			}
+			}*/
 		
 	}
 	public void mouseEntered(MouseEvent e) {
@@ -247,32 +250,38 @@ public class NodeMouseListener implements MouseListener, MouseMotionListener{
 		for (int i = 0; i < 4; i++) {
 			switch(i) {
 				case 0:
-					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					EdgeListener EListener;
+					AxelListener AListener;
+					edge[i].addMouseMotionListener(EListener = new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(EListener);
+					axis[i].addMouseMotionListener(AListener = new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(AListener);
 					
 					break;
 				
 				case 1:
-					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					break;
+					EdgeListener EListener2;
+					AxelListener AListener2;
+					edge[i].addMouseMotionListener(EListener2 = new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(EListener2);
+					axis[i].addMouseMotionListener(AListener2 = new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(AListener2);break;
 					
 				case 2:
-					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					break;
+					EdgeListener EListener3;
+					AxelListener AListener3;
+					edge[i].addMouseMotionListener(EListener3 = new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(EListener3);
+					axis[i].addMouseMotionListener(AListener3 = new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(AListener3);break;
 					
 				case 3:
-					edge[i].addMouseMotionListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					edge[i].addMouseListener(new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseMotionListener(new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
-					axis[i].addMouseListener(new AxelListener(edge, axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					EdgeListener EListener4;
+					AxelListener AListener4;
+					edge[i].addMouseMotionListener(EListener4 = new EdgeListener(axis, edge, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					edge[i].addMouseListener(EListener4);
+					axis[i].addMouseMotionListener(AListener4 = new AxelListener(edge,  axis, i, name, x, y, width, height, color, objectStrct, strct, mapPanel, objectNode));
+					axis[i].addMouseListener(AListener4);
 					break;
 			}
 		}

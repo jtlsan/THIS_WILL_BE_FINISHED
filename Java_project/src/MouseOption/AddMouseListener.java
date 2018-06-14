@@ -12,9 +12,10 @@ public class AddMouseListener {
 	DrawInfo nodeInfo;
 	String objectText;
 	JPanel mapPanel;
-	JButton chg;
+	JButton chg, applybtn;
+	
 	public AddMouseListener(JPanel mapPanel, JTextField name, JTextField x, JTextField y, JTextField width, JTextField height, JTextField color, 
-			MakeStructure strct, DrawInfo nodeInfo, JButton chg) {
+			MakeStructure strct, DrawInfo nodeInfo, JButton chg, JButton applybtn) {
 		this.mapPanel = mapPanel;
 		this.name = name;
 		this.x = x;
@@ -25,13 +26,14 @@ public class AddMouseListener {
 		this.strct = strct;
 		this.nodeInfo = nodeInfo;
 		this.chg = chg;
+		this.applybtn = applybtn;
 		
 		AddListener(this.nodeInfo);
 	}
 
 	void AddListener(DrawInfo nodeState) {
 		if(nodeState != null) {
-			NodeMouseListener mListener = new NodeMouseListener(mapPanel, name, x, y, width, height, color, strct, nodeInfo, chg);
+			NodeMouseListener mListener = new NodeMouseListener(mapPanel, name, x, y, width, height, color, strct, nodeInfo, chg, applybtn);
 			nodeState.node.addMouseListener(mListener);
 			nodeState.node.addMouseMotionListener(mListener);
 			for(int i = 0; i < nodeState.next.length; i++) {

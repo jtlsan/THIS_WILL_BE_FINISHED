@@ -4,6 +4,7 @@ import MouseOption.AddMouseListener;
 import MouseOption.NodeMouseListener;
 import Structure.DrawKit;
 import JsonInput.Input;
+import JsonOutput.Output;
 import Structure.MakeStructure;
 import MindMapPane.DrawInfo;
 import Structure.SplitByEnter;
@@ -31,30 +32,16 @@ public class template extends JFrame{
 		setTitle("스플릿 페인 만들기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		c = getContentPane();
-		
-		creatMenu();
-		
+				
 		creatPane();
 		setSize(1050,700);
 		setVisible(true);
 	}
 	
-	private void creatMenu() {
-		JMenuBar mb = new JMenuBar();
-		
-		mb.add(new JMenu("새로만들기"));
-		mb.add(new JMenu("열기"));
-		mb.add(new JMenu("저장"));
-		mb.add(new JMenu("다른 이름으로 저장"));
-		mb.add(new JMenu("닫기"));			// 메뉴클릭시 다른 옵션들 내려오는거랑 이벤트 다는거 743p 참고
-		mb.add(new JMenu("적용"));
-		mb.add(new JMenu("변경"));
-		
-		setJMenuBar(mb);
-	}
 	
 	private void creatPane() {
-		
+		checkStore chk = new checkStore();
+		chk.chk =0;
 		JPanel panel1 = new JPanel();
 		
 		JPanel panel3 = new JPanel();
@@ -160,7 +147,147 @@ public class template extends JFrame{
 		//-----------------------------------------------------------------------
 		
 		c.add(splitPane1);
+		JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
 		
+		//----------------------------------tool---------------------------
+		
+      //  toolBar.setBackground(Color.LIGHT_GRAY);
+        
+        JButton newBtn = new JButton("새로만들기");
+        newBtn.setToolTipText("파일을 생성합니다");
+        toolBar.add(newBtn); 
+        newBtn.addMouseListener(new MouseListener() {
+              public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+             
+             textEditorPane.setText(null);
+                // String splitList[] = (new SplitByEnter(newTextEditorPane.getText())).Split();
+              
+///////////////////////////////////////////////////////////////////////
+                 
+                 
+              //new OverLap(struct).OverallOverLap();
+                JPanel initial = new  JPanel();
+              //panel2 = new JPanel(struct);
+              scrollPane2.setViewportView(initial);
+           
+              }
+              public void mouseReleased(MouseEvent e) {}
+              public void mouseClicked(MouseEvent e) {}
+              public void mouseEntered(MouseEvent e) {}
+              public void mouseExited(MouseEvent e) {}
+           });// 툴팁달때는 이렇게
+        
+        JButton openBtn = new JButton("열기");
+        openBtn.setToolTipText("파일을 엽니다");
+        toolBar.add(openBtn);
+       
+        
+        //////////////////////////////////////////////////
+        JButton saveBtn = new JButton("저장");
+        
+        saveBtn.setToolTipText("파일을 저장합니다");
+        toolBar.add(saveBtn);
+        saveBtn.addMouseListener(new MouseListener() {
+           public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+              
+              Input tmp = new Input();
+              tmp.StoreJson(struct,textEditorPane.getText(), chk);//
+             // chk.chk = 1;
+           }
+           public void mouseReleased(MouseEvent e) {}
+           public void mouseClicked(MouseEvent e) {}
+           public void mouseEntered(MouseEvent e) {}
+           public void mouseExited(MouseEvent e) {}
+        });
+        
+        JButton otherSaveBtn = new JButton("다른이름으로 저장");
+        
+        otherSaveBtn.setToolTipText("파일을 다른 이름으로 저장합니다");
+        toolBar.add(otherSaveBtn);
+        otherSaveBtn.addMouseListener(new MouseListener() {
+           public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+              chk.chk =0;
+              Input tmp = new Input();
+              tmp.StoreJson(struct,textEditorPane.getText(),chk);//
+              chk.chk =1;
+           }
+           public void mouseReleased(MouseEvent e) {}
+           public void mouseClicked(MouseEvent e) {}
+           public void mouseEntered(MouseEvent e) {}
+           public void mouseExited(MouseEvent e) {}
+        });
+        JButton ExitBtn = new JButton("닫기");
+        ExitBtn.setToolTipText("프로그램을 종료합니다.");
+        toolBar.add(ExitBtn);
+        ExitBtn.addMouseListener(new MouseListener() {
+           public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+              
+              System.exit(0);
+              
+           }
+           public void mouseReleased(MouseEvent e) {}
+           public void mouseClicked(MouseEvent e) {}
+           public void mouseEntered(MouseEvent e) {}
+           public void mouseExited(MouseEvent e) {}
+        });
+        JButton SetBtn = new JButton("적용");
+        SetBtn.setToolTipText("텍스트를 마인드맵으로 적용합니다.");
+        toolBar.add(SetBtn);
+        SetBtn.addMouseListener(new MouseListener() {
+           public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+              
+              
+           }
+           public void mouseReleased(MouseEvent e) {}
+           public void mouseClicked(MouseEvent e) {
+	           String splitList[] = (new SplitByEnter(textEditorPane.getText())).Split();
+	           struct = new MakeStructure(splitList, null);
+	           new OverLap(struct).OverallOverLap();
+	           
+	           panel2 = new MapPanel(struct);
+	           scrollPane2.setViewportView(panel2);
+	           new ResizePanelSize(struct, panel2);
+	           
+	           panel2.setLayout(null);
+	           nodeInfo = new DrawInfo(struct, panel2);
+	           
+	           panel2.setVisible(true);
+	           RemoveNode remove;
+	           panel2.addMouseListener(remove = new RemoveNode(nodeInfo));
+				panel2.addMouseMotionListener(remove);
+           }
+           public void mouseEntered(MouseEvent e) {}
+           public void mouseExited(MouseEvent e) {}
+        });
+        
+        JButton applybtn = new JButton("변경");
+	    toolBar.add(applybtn);
+	    openBtn.addMouseListener(new MouseListener() {
+            public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
+               String saveText;
+               Output tmp = new Output();
+               text storeText = new text();
+               struct = tmp.openJson(struct, storeText);
+              
+               textEditorPane.setText(storeText.text);
+            new OverLap(struct).OverallOverLap();
+
+            panel2 = new MapPanel(struct);
+            scrollPane2.setViewportView(panel2);
+            new ResizePanelSize(struct, panel2);
+            
+            panel2.setLayout(null);
+            nodeInfo = new DrawInfo(struct, panel2);
+            
+            panel2.setVisible(true);
+            new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo, chg, applybtn);
+            }
+            public void mouseReleased(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {}
+         });
 		set.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {	//고친 부분
 				
@@ -181,7 +308,7 @@ public class template extends JFrame{
 				
 				panel2.setVisible(true);
 				
-				new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo, chg);
+				new AddMouseListener(panel2, nodeName, XofNode, YofNode, WofNode, HofNode, ColorofNode, struct, nodeInfo, chg, applybtn);
 				RemoveNode remove;
 				panel2.addMouseListener(remove = new RemoveNode(nodeInfo));
 				panel2.addMouseMotionListener(remove);
@@ -193,44 +320,37 @@ public class template extends JFrame{
 
 			}
 		});
-		//----------------------------------tool---------------------------
-		 JToolBar toolBar = new JToolBar();
-	      toolBar.setFloatable(false);
-	      
-	      
-	      JButton newBtn = new JButton("새로만들기");
-	      newBtn.setToolTipText("파일을 생성합니다");
-	      toolBar.add(newBtn);               // 툴팁달때는 이렇게
-	      
-	      JButton openBtn = new JButton("열기");
-	      openBtn.setToolTipText("파일을 엽니다");
-	      toolBar.add(openBtn);
-	      
-	      
-	      JButton saveBtn = new JButton("저장");
-	      
-	      saveBtn.setToolTipText("파일을 저장합니다");
-	      toolBar.add(saveBtn);
-	      saveBtn.addMouseListener(new MouseListener() {
-	         public void mousePressed(MouseEvent e) {   //////고친 부분 툴바수정하고 마우스리스너
-	            
-	            Input tmp = new Input();
-	            tmp.StoreJson(struct);//
-	            
-	         }
-	         public void mouseReleased(MouseEvent e) {}
-	         public void mouseClicked(MouseEvent e) {}
-	         public void mouseEntered(MouseEvent e) {}
-	         public void mouseExited(MouseEvent e) {}
-	      });
-	      
-	      toolBar.add(new JButton("다른이름으로 저장"));
-	      toolBar.add(new JButton("닫기"));
-	      toolBar.add(new JButton("적용"));
-	      toolBar.add(new JButton("변경"));
-	      
-	      c.add(toolBar, BorderLayout.NORTH);
-		
+       
+        
+
+        
+        
+        c.add(toolBar, BorderLayout.NORTH);
+        //-------------------아래부터 메뉴--------------------------------
+        JMenuBar mb = new JMenuBar();
+        
+        
+        JMenu Menu = new JMenu("메뉴");
+        mb.add(Menu);
+        JMenuItem NewMenu = new JMenuItem("새로만들기");
+        JMenuItem OpenMenu = new JMenuItem("열기");
+        JMenuItem SaveMenu = new JMenuItem("저장");
+        JMenuItem OtherSaveMenu = new JMenuItem("다른이름으로 저장");
+        JMenuItem ExitMenu = new JMenuItem("닫기");
+        JMenuItem SetMenu = new JMenuItem("적용");
+        JMenuItem ChgMenu = new JMenuItem("변경");
+
+        Menu.add(NewMenu);
+        Menu.add(OpenMenu);
+        Menu.add(SaveMenu);
+        Menu.add(OtherSaveMenu);
+        Menu.add(ExitMenu);
+        Menu.add(SetMenu);
+        Menu.add(ChgMenu);
+        
+        
+                 
+        setJMenuBar(mb);
 		
 		
 	}
@@ -275,7 +395,7 @@ public class template extends JFrame{
 						x1 = strct.x + strct.width;
 						y1 = strct.y + (int)(strct.height / 2);
 						x2 = strct.next[i].x;
-						y2 = strct.next[i].y + (int)(strct.height / 2);
+						y2 = strct.next[i].y + (int)(strct.next[i].height / 2);
 						g.drawLine(x1,  y1,  x2,  y2);
 						new DrawKit(strct.next[i]).EastLine(g);
 						break;
@@ -283,7 +403,7 @@ public class template extends JFrame{
 					case 3:
 						x1 = strct.x + (int)(strct.width /2);
 						y1 = strct.y + strct.height;
-						x2 = strct.next[i].x + (int)(strct.width / 2);
+						x2 = strct.next[i].x + (int)(strct.next[i].width / 2);
 						y2 = strct.next[i].y;
 						g.drawLine(x1,  y1,  x2,  y2);
 						new DrawKit(strct.next[i]).SouthLine(g);
@@ -309,6 +429,7 @@ public class template extends JFrame{
 			DrawInfo tmp = nodePointer;
 			for(int i = 0; i < tmp.node.getComponents().length; i++) {
 				tmp.node.getComponent(i).setVisible(false);
+				//tmp.node.remove(tmp.node.getComponent(i));
 			}
 			for(int i = 0; i < 4; i++) {
 				if (tmp.next[i] == null)

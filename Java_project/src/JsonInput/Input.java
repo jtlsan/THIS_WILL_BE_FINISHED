@@ -10,12 +10,15 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.json.simple.*;
 import Structure.*;
+import template.checkStore;
 
 
 public class Input {
-   public void StoreJson(MakeStructure root) {
-      JSONObject start=new JSONObject();
+   
+   public void StoreJson(MakeStructure root, String text, checkStore chk) {
       
+      JSONObject start=new JSONObject();
+      if (chk.chk == 0) {
       JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
       FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON","json","gif");
         chooser.setFileFilter(filter);
@@ -23,15 +26,18 @@ public class Input {
         int ret=chooser.showSaveDialog(null);
         if(ret!=JFileChooser.APPROVE_OPTION){
             JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
-            return;
+            return ;
         }
         
-        String filePath=chooser.getSelectedFile().getPath();
-        filePath = filePath + ".json";
+        chk.filePath =chooser.getSelectedFile().getPath();
+        chk.filePath = chk.filePath + ".json";
+        chk.chk = 1;
+      }
+        start.put("text", text);
       JsonMaker(root, start);
       
       try { 
-         FileWriter file = new FileWriter(filePath);
+         FileWriter file = new FileWriter(chk.filePath);
            file.write(start.toJSONString());
            file.flush();
            file.close();
@@ -42,7 +48,7 @@ public class Input {
       
       
    }
-   static void JsonMaker(MakeStructure a, JSONObject start){
+    void JsonMaker(MakeStructure a, JSONObject start){
       
       JSONArray next = new JSONArray();
        
@@ -67,7 +73,9 @@ public class Input {
           start.put("y", a.y);
         start.put("width", a.width);
          start.put("height", a.height);
-        start.put("color", a.background);
+        start.put("r", a.r);
+        start.put("g", a.g);
+        start.put("b", a.b);
           start.put("name", a.name);
        if(flagNull)
           start.put("Next",null);

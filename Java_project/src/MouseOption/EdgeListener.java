@@ -44,14 +44,15 @@ public class EdgeListener implements MouseListener, MouseMotionListener{
 		*/
 		int mouseX = (int)objectNode.node.getParent().getMousePosition().getX();
 		int mouseY = (int)objectNode.node.getParent().getMousePosition().getY();
+		System.out.println(mouseX + " " + mouseY);
 		
 		
 		switch(way) {
 			case 0:
 				
 				if(mouseX < objectStrct.x && mouseY < objectStrct.y) {
-					objectStrct.width += Math.abs(objectStrct.x - mouseX);
-					objectStrct.height += Math.abs(objectStrct.y - mouseY);
+					objectStrct.width += objectStrct.x - mouseX;
+					objectStrct.height += (objectStrct.y - mouseY);
 				}
 				else if (mouseX == objectStrct.x && mouseY < objectStrct.y) {
 					objectStrct.height += Math.abs(objectStrct.y - mouseY);					
@@ -72,7 +73,7 @@ public class EdgeListener implements MouseListener, MouseMotionListener{
 					objectStrct.width += Math.abs(objectStrct.x - mouseX);
 					objectStrct.height -= Math.abs(objectStrct.y - mouseY);		
 				}
-				else  {
+				else {
 					objectStrct.width -= Math.abs(mouseX - objectStrct.x);
 					objectStrct.height -= Math.abs(mouseY - objectStrct.y);
 				}
